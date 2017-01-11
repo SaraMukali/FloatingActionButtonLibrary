@@ -90,7 +90,7 @@ open class FloatingActionButton: UIView {
         
         layer.shouldRasterize = true
         layer.rasterizationScale = UIScreen.main.scale
-        if isCustomFrame == false {
+        if !isCustomFrame {
             setRightBottomFrame()
         } else {
             radius = min(frame.size.width/2, frame.size.height/2)
@@ -121,7 +121,7 @@ open class FloatingActionButton: UIView {
     
     //Функция открывает или закрывает кнопку в зависимости от состояния
     fileprivate func toggle() {
-        if isClosed == true {
+        if isClosed {
             open()
         } else {
             close()
@@ -191,21 +191,18 @@ open class FloatingActionButton: UIView {
     
     //Кнопка распологается в нижнем правом углу
     fileprivate func setRightBottomFrame() {
-        if superview == nil {
-            frame = CGRect(
-                x: (UIScreen.main.bounds.size.width - radius*2) - paddingX,
-                y: (UIScreen.main.bounds.size.height - radius*2) - paddingY,
-                width: radius*2,
-                height: radius*2
-            )
-        } else {
-            frame = CGRect(
-                x: (superview!.bounds.size.width-radius*2) - paddingX,
-                y: (superview!.bounds.size.height-radius*2) - paddingY,
-                width: radius*2,
-                height: radius*2
-            )
+        var sizeVariable = UIScreen.main.bounds.size
+        
+        if superview != nil {
+            sizeVariable = superview!.bounds.size
         }
+        
+        frame = CGRect(
+            x: (sizeVariable.width - radius*2) - paddingX,
+            y: (sizeVariable.height - radius*2) - paddingY,
+            width: radius*2,
+            height: radius*2
+        )
     }
 }
 
