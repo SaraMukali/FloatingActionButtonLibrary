@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class Constants {
+struct Constants {
     static let radius: CGFloat = 20
     static let size: CGFloat = 40
     static let color: UIColor = UIColor(red: 52.0/255.0, green: 152.0/255.0, blue: 219.0/255.0, alpha: 1.0)
