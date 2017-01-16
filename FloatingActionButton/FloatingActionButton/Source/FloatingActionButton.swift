@@ -134,9 +134,9 @@ open class FloatingActionButton: UIView {
 
     //Функция добавляет вторичную кнопку в массив
     open func addItem(item: FloatingActionButtonItem) {
-        let big = radius > item.radius ? radius : item.radius
-        let small = radius <= item.radius ? radius : item.radius
-        item.frame.origin = CGPoint(x: big-small, y: big-small)
+        let bigRadius = radius > item.radius ? radius : item.radius
+        let smallRadius = radius <= item.radius ? radius : item.radius
+        item.frame.origin = CGPoint(x: bigRadius - smallRadius, y: bigRadius - smallRadius)
         item.radius = itemRadius
         item.alpha = 0
         item.actionButton = self
@@ -256,9 +256,9 @@ open class FloatingActionButton: UIView {
         for item in items {
             if item.isHidden == true { continue }
             itemHeight += item.radius * 2 + itemSpace
-            let big = radius > item.radius ? radius : item.radius
-            let small = radius <= item.radius ? radius : item.radius
-            item.frame.origin.x = big-small
+            let bigRadius = radius > item.radius ? radius : item.radius
+            let smallRadius = radius <= item.radius ? radius : item.radius
+            item.frame.origin.x = bigRadius - smallRadius
             item.frame.origin.y = (-1) * itemHeight
             item.alpha = 1
         }
@@ -357,9 +357,9 @@ open class FloatingActionButton: UIView {
     //Вторичные кнопки перерисовываются при измнении размера
     fileprivate func redrawItems() {
         for item in items {
-            let big = radius > item.radius ? radius : item.radius
-            let small = radius <= item.radius ? radius : item.radius
-            item.frame.origin = CGPoint(x: big-small, y: big-small)
+            let bigRadius = radius > item.radius ? radius : item.radius
+            let smallRadius = radius <= item.radius ? radius : item.radius
+            item.frame.origin = CGPoint(x: bigRadius - smallRadius, y: bigRadius - smallRadius)
         }
     }
     
@@ -370,11 +370,9 @@ open class FloatingActionButton: UIView {
         let x = item.titleLabel.frame.origin.x
         let y = item.bounds.origin.y
         
-        var width: CGFloat
+        var width: CGFloat = item.titleLabel.bounds.size.width + item.bounds.size.width + tappableMargin
         if isCustomFrame {
-            width = item.titleLabel.bounds.size.width + item.bounds.size.width + tappableMargin + paddingX
-        } else {
-            width = item.titleLabel.bounds.size.width + item.bounds.size.width + tappableMargin
+            width = width + paddingX
         }
         
         let height = item.radius * 2
