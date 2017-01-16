@@ -73,7 +73,9 @@ open class FloatingActionButtonItem: UIView {
         if touches.count == 1 {
             let touch = touches.first
             if touch?.tapCount == 1 {
-                if touch?.location(in: self) == nil { return }
+                if touch?.location(in: self) == nil {
+                    return
+                }
                 if actionButton != nil {
                     actionButton!.deactivate()
                 }

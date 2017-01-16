@@ -227,7 +227,9 @@ open class FloatingActionButton: UIView {
     open override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         if isActive {
             for item in items {
-                if item.isHidden == true { continue }
+                if item.isHidden {
+                    continue
+                }
                 var itemPoint = item.convert(point, from: self)
                 let tapArea = determineTapArea(item: item)
                 if tapArea.contains(itemPoint) == true {
@@ -254,7 +256,9 @@ open class FloatingActionButton: UIView {
         
         var itemHeight: CGFloat = 0
         for item in items {
-            if item.isHidden == true { continue }
+            if item.isHidden {
+                continue
+            }
             itemHeight += item.radius * 2 + itemSpace
             let bigRadius = radius > item.radius ? radius : item.radius
             let smallRadius = radius <= item.radius ? radius : item.radius
@@ -276,7 +280,9 @@ open class FloatingActionButton: UIView {
         isActive = false
         
         for item in items.reversed() {
-            if item.isHidden == true { continue }
+            if item.isHidden {
+                continue
+            }
             item.alpha = 0
         }
     }
