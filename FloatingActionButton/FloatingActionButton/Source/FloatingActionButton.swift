@@ -17,7 +17,7 @@ open class FloatingActionButton: UIView {
     open var color: UIColor = Constants.color
     
     //Иконка основной кнопки
-    open var image: UIImage? = Constants.image
+    open var icon: UIImage? = Constants.icon
     
     //Расстояние от нижнего правого угла по горизонтали
     open var paddingX: CGFloat = Constants.paddingX
@@ -34,8 +34,31 @@ open class FloatingActionButton: UIView {
     //Цвет затемнения
     open var blackoutColor: UIColor = Constants.blackoutColor
     
-    //Активаность кнопки
-    open var isClosed: Bool = Constants.isClosed
+    //Активность кнопки
+    open var isActive: Bool = Constants.isActive
+    
+    //Массив из вторичных кнопок
+    open var items: [FloatingActionButtonItem] = []
+    
+    //Радиус вторичной кнопки
+    open var itemRadius: CGFloat = Constants.radius
+        {
+        didSet {
+            items.forEach { item in
+                item.radius = itemRadius
+            }
+            redrawItems()
+        }
+    }
+    
+    //Расстояние между вторичными кнопками
+    open var itemSpace: CGFloat = Constants.space
+    
+    //Цвет вторичной кнопки
+    open var itemColor: UIColor = Constants.itemColor
+    
+    //Цвет названия кнопки
+    open var itemTitleColor: UIColor = Constants.titleColor
     
     //Нестандартные размер и распложение кнопки
     fileprivate var isCustomFrame: Bool = Constants.isCustomFrame
@@ -44,14 +67,17 @@ open class FloatingActionButton: UIView {
     fileprivate var circleLayer: CAShapeLayer = CAShapeLayer()
     
     //Вью, на которой расположена иконка
-    fileprivate var buttonImageView: UIImageView = UIImageView()
+    fileprivate var iconImageView: UIImageView = UIImageView()
     
     //Вью, которая затемняется
     fileprivate var blackoutView : UIControl = UIControl()
     
+    //Функция, выполняющаяся при нажатии на основную кнопку, если нет вторичных
+    fileprivate var handler: ((FloatingActionButton) -> Void)? = nil
+    
     //Пустой инициализатор
-    init() {
-        super.init(frame: CGRect(x: 0, y: 0, width: (radius*2), height: (radius*2)))
+    public init() {
+        super.init(frame: CGRect(x: 0, y: 0, width: (radius * 2), height: (radius * 2)))
         backgroundColor = UIColor.clear
     }
     
@@ -59,7 +85,7 @@ open class FloatingActionButton: UIView {
     public init(radius: CGFloat) {
         self.radius = radius
         
-        super.init(frame: CGRect(x: 0, y: 0, width: (radius*2), height: (radius*2)))
+        super.init(frame: CGRect(x: 0, y: 0, width: (radius * 2), height: (radius * 2)))
         backgroundColor = UIColor.clear
     }
     
@@ -98,15 +124,93 @@ open class FloatingActionButton: UIView {
         
         setCircleLayer()
         
-        if image != nil {
-            setButtonImage()
+        if icon != nil {
+            setIcon()
         }
         if hasShadow {
             setShadow()
         }
     }
+
+    //Функция добавляет вторичную кнопку в массив
+    open func addItem(item: FloatingActionButtonItem) {
+        let bigRadius = radius > item.radius ? radius : item.radius
+        let smallRadius = radius <= item.radius ? radius : item.radius
+        item.frame.origin = CGPoint(x: bigRadius - smallRadius, y: bigRadius - smallRadius)
+        item.radius = itemRadius
+        item.alpha = 0
+        item.actionButton = self
+        items.append(item)
+        addSubview(item)
+    }
     
-    //Функция, выполняющаяся после нажатия на вью с кнопкой
+    //Добавление вторичной кнопки с определенным названием
+    open func addItem(title: String) {
+        let item = FloatingActionButtonItem()
+        setItemDefaults(item)
+        item.title = title
+        addItem(item: item)
+    }
+    
+    //Добавление вторичной кнопки с определенными названием и действием при нажатии на кнопку
+    open func addItem(title: String, handler: @escaping ((FloatingActionButtonItem) -> Void)) {
+        let item = FloatingActionButtonItem()
+        setItemDefaults(item)
+        item.title = title
+        item.handler = handler
+        addItem(item: item)
+    }
+    
+    //Добавление вторичной кнопки с опрделенной иконкой
+    open func addItem(icon: UIImage?) {
+        let item = FloatingActionButtonItem()
+        setItemDefaults(item)
+        item.icon = icon
+        addItem(item: item)
+    }
+    
+    //Добавление вторичной кнопки с определенными иконкой и действием при нажатии на кнопку
+    open func addItem(icon: UIImage?, handler: @escaping ((FloatingActionButtonItem) -> Void)) {
+        let item = FloatingActionButtonItem()
+        setItemDefaults(item)
+        item.icon = icon
+        item.handler = handler
+        addItem(item: item)
+    }
+
+    //Добавление вторичной кнопки с определенными названием и икнокой
+    open func addItem(_ title: String, icon: UIImage?) {
+        let item = FloatingActionButtonItem()
+        setItemDefaults(item)
+        item.title = title
+        item.icon = icon
+        addItem(item: item)
+    }
+    
+    //Добавление вторичной кнокпи с определенными названием, иконкой и действием при нажатии на кнопку
+    open func addItem(_ title: String, icon: UIImage?, handler: @escaping ((FloatingActionButtonItem) -> Void)) {
+        let item = FloatingActionButtonItem()
+        setItemDefaults(item)
+        item.title = title
+        item.icon = icon
+        item.handler = handler
+        addItem(item: item)
+    }
+    
+    //Удаление вторичной кнопки по индексу
+    open func removeItem(index: Int) {
+        if index < items.count {
+            items[index].removeFromSuperview()
+            items.remove(at: index)
+        }
+    }
+
+    //Функция добаления действия после нажатия на вторичную кнопку
+    open func addAction(_ handler: @escaping ((FloatingActionButton) -> Void)){
+        self.handler = handler
+    }
+    
+    //Функция, выполняющаяся после нажатия на вью с основной кнопкой
     override open func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
         if isTouched(touches) {
@@ -114,59 +218,104 @@ open class FloatingActionButton: UIView {
         }
     }
     
-    //Функция, вызывающаяся при нажатии
+    //Определение нажатия кнопки
     open func isTouched(_ touches: Set<UITouch>) -> Bool {
         return touches.count == 1 && touches.first?.tapCount == 1 && touches.first?.location(in: self) != nil
     }
     
-    //Функция открывает или закрывает кнопку в зависимости от состояния
-    fileprivate func toggle() {
-        if isClosed {
-            open()
-        } else {
-            close()
+    //Функция позволяет найти тот сабвью, с которым взаимодействовал пользователь
+    open override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        if isActive {
+            for item in items {
+                if item.isHidden {
+                    continue
+                }
+                var itemPoint = item.convert(point, from: self)
+                let tapArea = determineTapArea(item: item)
+                if tapArea.contains(itemPoint) == true {
+                    itemPoint = item.bounds.origin
+                    return item.hitTest(itemPoint, with: event)
+                }
+            }
         }
+        return super.hitTest(point, with: event)
     }
     
-    //Состояние, когда видно затемнение и будут видны другие маленькие кнопки
-    fileprivate func open() {
-        setBlackoutView()
+    //Состояние, когда видны затемнение экрана и вторичные кнопки
+    internal func activate() {
         self.superview?.insertSubview(blackoutView, aboveSubview: self)
         self.superview?.bringSubview(toFront: self)
-        blackoutView.addTarget(self, action: #selector(close), for: UIControlEvents.touchUpInside)
+        
+        setBlackoutView()
+        blackoutView.addTarget(self, action: #selector(deactivate), for: UIControlEvents.touchUpInside)
         if hasBlackout {
-            self.blackoutView.alpha = 1
+            blackoutView.alpha = 1
         }
-        isClosed = false
+        
+        isActive = true
+        
+        var itemHeight: CGFloat = 0
+        for item in items {
+            if item.isHidden {
+                continue
+            }
+            itemHeight += item.radius * 2 + itemSpace
+            let bigRadius = radius > item.radius ? radius : item.radius
+            let smallRadius = radius <= item.radius ? radius : item.radius
+            item.frame.origin.x = bigRadius - smallRadius
+            item.frame.origin.y = (-1) * itemHeight
+            item.alpha = 1
+        }
+        if items.count == 0 {
+            handler?(self)
+            deactivate()
+        }
     }
     
-    //Не видно затемнения
-    @objc fileprivate func close() {
-        self.blackoutView.removeTarget(self, action: #selector(close), for: UIControlEvents.touchUpInside)
-        self.blackoutView.alpha = 0
-        isClosed = true
+    //Состояние, когда на экране только основная кнопка
+    internal func deactivate() {
+        blackoutView.removeTarget(self, action: #selector(deactivate), for: UIControlEvents.touchUpInside)
+        blackoutView.alpha = 0
+        
+        isActive = false
+        
+        for item in items.reversed() {
+            if item.isHidden {
+                continue
+            }
+            item.alpha = 0
+        }
+    }
+    
+    //Функция делает кнопку активной и неактивной
+    fileprivate func toggle() {
+        if isActive {
+            deactivate()
+        } else {
+            activate()
+        }
     }
     
     //Функция делает кнопку круглой
     fileprivate func setCircleLayer() {
         circleLayer.removeFromSuperlayer()
-        circleLayer.frame = CGRect(x: 0, y: 0, width: (radius*2), height: (radius*2))
+        circleLayer.frame = CGRect(x: 0, y: 0, width: (radius * 2), height: (radius * 2))
         circleLayer.backgroundColor = color.cgColor
-        circleLayer.cornerRadius = (radius*2)/2
+        circleLayer.cornerRadius = radius
         layer.addSublayer(circleLayer)
     }
     
     //Функция добавляет иконку
-    fileprivate func setButtonImage() {
-        buttonImageView.removeFromSuperview()
-        buttonImageView = UIImageView(image: image)
-        buttonImageView.frame = CGRect(
-            x: circleLayer.frame.origin.x + (radius - buttonImageView.frame.size.width / 2),
-            y: circleLayer.frame.origin.y + (radius - buttonImageView.frame.size.height / 2),
-            width: buttonImageView.frame.size.width,
-            height: buttonImageView.frame.size.height
+    fileprivate func setIcon() {
+        iconImageView.removeFromSuperview()
+        iconImageView = UIImageView(image: icon)
+        iconImageView.frame = CGRect(
+            x: circleLayer.frame.origin.x + (radius - iconImageView.frame.size.width / 2),
+            y: circleLayer.frame.origin.y + (radius - iconImageView.frame.size.height / 2),
+            width: iconImageView.frame.size.width,
+            height: iconImageView.frame.size.height
         )
-        addSubview(buttonImageView)
+        addSubview(iconImageView)
     }
     
     //Функция создет вью для затемнения
@@ -181,7 +330,7 @@ open class FloatingActionButton: UIView {
         blackoutView.isUserInteractionEnabled = true
     }
     
-    //Функция добавляет
+    //Функция добавляет тень к основной кнопке
     fileprivate func setShadow() {
         layer.shadowOffset = CGSize(width: 4, height: 4)
         layer.shadowRadius = 10
@@ -198,11 +347,42 @@ open class FloatingActionButton: UIView {
         }
         
         frame = CGRect(
-            x: (sizeVariable.width - radius*2) - paddingX,
-            y: (sizeVariable.height - radius*2) - paddingY,
-            width: radius*2,
-            height: radius*2
+            x: (sizeVariable.width - radius * 2) - paddingX,
+            y: (sizeVariable.height - radius * 2) - paddingY,
+            width: radius * 2,
+            height: radius * 2
         )
+    }
+
+    //Вторичной кнопке присваиваются стандартные значения
+    fileprivate func setItemDefaults(_ item: FloatingActionButtonItem) {
+        item.color = itemColor
+        item.titleColor = itemTitleColor
+    }
+    
+    //Вторичные кнопки перерисовываются при измнении размера
+    fileprivate func redrawItems() {
+        for item in items {
+            let bigRadius = radius > item.radius ? radius : item.radius
+            let smallRadius = radius <= item.radius ? radius : item.radius
+            item.frame.origin = CGPoint(x: bigRadius - smallRadius, y: bigRadius - smallRadius)
+        }
+    }
+    
+    //Опрделяется область, которая должна реагировать на взаимодействие пользователя
+    fileprivate func determineTapArea(item : FloatingActionButtonItem) -> CGRect {
+        let tappableMargin : CGFloat = 30.0
+        
+        let x = item.titleLabel.frame.origin.x
+        let y = item.bounds.origin.y
+        
+        var width: CGFloat = item.titleLabel.bounds.size.width + item.bounds.size.width + tappableMargin
+        if isCustomFrame {
+            width = width + paddingX
+        }
+        
+        let height = item.radius * 2
+        return CGRect(x: x, y: y, width: width, height: height)
     }
 }
 

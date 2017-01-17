@@ -12,6 +12,8 @@
 		D2204D6F1E249C8F006A273D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2204D6D1E249C8F006A273D /* Main.storyboard */; };
 		D2204D711E249C8F006A273D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D2204D701E249C8F006A273D /* Assets.xcassets */; };
 		D2204D741E249C8F006A273D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2204D721E249C8F006A273D /* LaunchScreen.storyboard */; };
+		D24C51291E277F9D00CB36DD /* FloatingActionButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D24C51281E277F9D00CB36DD /* FloatingActionButtonItem.swift */; };
+		D24C512B1E2786E700CB36DD /* Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D24C512A1E2786E700CB36DD /* Icons.xcassets */; };
 		D2AEE2501E249D6F0049725D /* FloatingActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2AEE24F1E249D6F0049725D /* FloatingActionButton.swift */; };
 		D2AEE2531E249E710049725D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2AEE2521E249E710049725D /* Constants.swift */; };
 /* End PBXBuildFile section */
@@ -35,6 +37,8 @@
 		D2204D731E249C8F006A273D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D2204D751E249C8F006A273D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D2204D7A1E249C8F006A273D /* FloatingActionButtonUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FloatingActionButtonUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D24C51281E277F9D00CB36DD /* FloatingActionButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FloatingActionButtonItem.swift; path = Source/FloatingActionButtonItem.swift; sourceTree = "<group>"; };
+		D24C512A1E2786E700CB36DD /* Icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Icons.xcassets; sourceTree = "<group>"; };
 		D2AEE24F1E249D6F0049725D /* FloatingActionButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FloatingActionButton.swift; path = Source/FloatingActionButton.swift; sourceTree = "<group>"; };
 		D2AEE2521E249E710049725D /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = Source/Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -90,6 +94,7 @@
 			children = (
 				D2AEE2521E249E710049725D /* Constants.swift */,
 				D2AEE24F1E249D6F0049725D /* FloatingActionButton.swift */,
+				D24C51281E277F9D00CB36DD /* FloatingActionButtonItem.swift */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -99,6 +104,7 @@
 			children = (
 				D2204D691E249C8F006A273D /* AppDelegate.swift */,
 				D2204D701E249C8F006A273D /* Assets.xcassets */,
+				D24C512A1E2786E700CB36DD /* Icons.xcassets */,
 				D2204D751E249C8F006A273D /* Info.plist */,
 				D2204D721E249C8F006A273D /* LaunchScreen.storyboard */,
 			);
@@ -190,6 +196,7 @@
 			files = (
 				D2204D741E249C8F006A273D /* LaunchScreen.storyboard in Resources */,
 				D2204D711E249C8F006A273D /* Assets.xcassets in Resources */,
+				D24C512B1E2786E700CB36DD /* Icons.xcassets in Resources */,
 				D2204D6F1E249C8F006A273D /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -210,6 +217,7 @@
 			files = (
 				D2204D6C1E249C8F006A273D /* ViewController.swift in Sources */,
 				D2AEE2501E249D6F0049725D /* FloatingActionButton.swift in Sources */,
+				D24C51291E277F9D00CB36DD /* FloatingActionButtonItem.swift in Sources */,
 				D2204D6A1E249C8F006A273D /* AppDelegate.swift in Sources */,
 				D2AEE2531E249E710049725D /* Constants.swift in Sources */,
 			);
