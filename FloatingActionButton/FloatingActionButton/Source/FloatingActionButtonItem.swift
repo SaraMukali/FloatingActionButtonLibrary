@@ -68,14 +68,34 @@ open class FloatingActionButtonItem: UIView {
         }
     }
     
-    //Функция, выполняющаяся после нажатия на вью с вторичной кнопкой
-    open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if touches.count == 1 {
             let touch = touches.first
             if touch?.tapCount == 1 {
                 if touch?.location(in: self) == nil {
                     return
                 }
+            }
+        }
+    }
+    
+    open override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if touches.count == 1 {
+            let touch = touches.first
+            if touch?.tapCount == 1 {
+                if touch?.location(in: self) == nil {
+                    return
+                }
+            }
+        }
+    }
+    
+    //Функция, выполняющаяся после нажатия на вью с вторичной кнопкой
+    open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if touches.count == 1 {
+            let touch = touches.first
+            if touch?.tapCount == 1 {
+                if touch?.location(in: self) == nil { return }
                 if actionButton != nil {
                     actionButton!.deactivate()
                 }
@@ -83,12 +103,7 @@ open class FloatingActionButtonItem: UIView {
             }
         }
     }
-    
-    //Функция, вызывающаяся при нажатии
-    open func isTouched(_ touches: Set<UITouch>) -> Bool {
-        return touches.count == 1 && touches.first?.tapCount == 1 && touches.first?.location(in: self) != nil
-    }
-    
+
     //Функция делает кнопку круглой
     fileprivate func createCircleLayer() {
         let castParent : FloatingActionButton = superview as! FloatingActionButton

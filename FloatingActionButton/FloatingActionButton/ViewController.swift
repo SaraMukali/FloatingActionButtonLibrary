@@ -17,7 +17,7 @@ class ViewController: UIViewController {
         fab.color = UIColor.green
         fab.paddingX = 30
         fab.paddingY = 30
-        fab.radius = 40
+        fab.radius = 30
         fab.icon = nil
         fab.hasBlackout = true
         fab.hasShadow = true
@@ -27,16 +27,14 @@ class ViewController: UIViewController {
             alert.addAction(UIAlertAction(title: "No!", style: .default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
-
         
-        fab.itemRadius = 30
-        fab.itemSpace = 40
+        fab.itemSpace = 25
         
         let item = FloatingActionButtonItem()
         item.color = UIColor.blue
         item.title = "Custom"
         fab.addItem(item: item)
-        
+        fab.itemRadius = 40
         fab.addItem(title: "With title")
         
         item.titleColor = UIColor.green

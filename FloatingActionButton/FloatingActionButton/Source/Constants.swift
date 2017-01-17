@@ -30,5 +30,8 @@ struct Constants {
     static let isActive: Bool = false
     
     static let isCustomFrame: Bool = false
+    
+    static let colorChange: CGFloat = 50
+    static let changedColor: UIColor? = nil
 
 }
