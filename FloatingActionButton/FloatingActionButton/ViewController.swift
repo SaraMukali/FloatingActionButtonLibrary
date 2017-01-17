@@ -28,7 +28,7 @@ class ViewController: UIViewController {
             self.present(alert, animated: true, completion: nil)
         }
         
-        fab.itemSpace = 25
+        fab.itemSpace = 20
         
         let item = FloatingActionButtonItem()
         item.color = UIColor.blue
