@@ -68,6 +68,7 @@ open class FloatingActionButtonItem: UIView {
         }
     }
     
+    //Функция, выполняющаяся после первого прикосновения ко вью с основной кнопкой
     open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if touches.count == 1 {
             let touch = touches.first
@@ -79,6 +80,7 @@ open class FloatingActionButtonItem: UIView {
         }
     }
     
+    //Функция, выполняющаяся во время подвижного прикосновения ко вью с основной кнопкой
     open override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         if touches.count == 1 {
             let touch = touches.first

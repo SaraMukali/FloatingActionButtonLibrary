@@ -14,11 +14,11 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         let fab = FloatingActionButton()
         fab.add(on: self.view)
-        fab.color = UIColor.green
+        fab.color = UIColor.yellow
+        fab.changedColor = UIColor.purple
         fab.paddingX = 30
         fab.paddingY = 30
-        fab.radius = 30
-        fab.icon = nil
+        fab.radius = 40
         fab.hasBlackout = true
         fab.hasShadow = true
         
@@ -34,7 +34,7 @@ class ViewController: UIViewController {
         item.color = UIColor.blue
         item.title = "Custom"
         fab.addItem(item: item)
-        fab.itemRadius = 40
+        fab.itemRadius = 30
         fab.addItem(title: "With title")
         
         item.titleColor = UIColor.green

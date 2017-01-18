@@ -70,7 +70,7 @@ open class FloatingActionButton: UIView {
     
     //Слой, меняющий цвет кнопки во время нажатия
     fileprivate var colorChangeLayer: CAShapeLayer = CAShapeLayer()
-    
+        
     //Вью, на которой расположена иконка
     fileprivate var iconImageView: UIImageView = UIImageView()
     
@@ -139,7 +139,6 @@ open class FloatingActionButton: UIView {
 
     //Функция добавляет вторичную кнопку в массив
     open func addItem(item: FloatingActionButtonItem) {
-        
         let itemHeight = CGFloat(self.items.count) * (item.radius * 2 + itemSpace)
         item.frame.origin = CGPoint(x: radius - item.radius, y: (-1) * itemHeight)
         item.radius = itemRadius
@@ -225,7 +224,7 @@ open class FloatingActionButton: UIView {
     override open func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
         colorChangeLayer.removeFromSuperlayer()
-        if isTouched(touches) {
+        if isTouched(touches) || colorChangeLayer.opacity == 1 {
             toggle()
         }
     }
@@ -309,10 +308,7 @@ open class FloatingActionButton: UIView {
                 
             }, completion: nil)
             delay += 0.1
-            
         }
-
-
     }
     
     //Функция делает кнопку активной и неактивной
@@ -335,16 +331,12 @@ open class FloatingActionButton: UIView {
     
     //Функция меняет цвет кнопки
     fileprivate func addColorChange() {
+
         colorChangeLayer.frame = CGRect(x: circleLayer.frame.origin.x, y: circleLayer.frame.origin.y, width: radius * 2, height: radius * 2)
         
-        var changedColor = color
-        
-        if self.changedColor != nil {
-            changedColor = self.changedColor!
-        }
         var components =  [CGFloat]()
         
-        changedColor.cgColor.components?.forEach { component in
+        color.cgColor.components?.forEach { component in
             if component * 255.0 >= Constants.colorChange {
                 components.append((component * 255.0 - Constants.colorChange)/255.0)
             } else {
@@ -352,11 +344,25 @@ open class FloatingActionButton: UIView {
             }
         }
         colorChangeLayer.cornerRadius = radius
-
-        layer.addSublayer(colorChangeLayer)
-        UIView.animate(withDuration: 50, animations: {
-            self.colorChangeLayer.backgroundColor = UIColor(red: components[0], green: components[1], blue: components[2], alpha: 1.0).cgColor
-        })
+        
+        if self.changedColor == nil {
+            if components.count < 4 {
+                colorChangeLayer.backgroundColor = UIColor(white: components[0], alpha: 1.0).cgColor
+            } else {
+                colorChangeLayer.backgroundColor = UIColor(red: components[0], green: components[1], blue: components[2], alpha: 1.0).cgColor
+            }
+        } else {
+            colorChangeLayer.backgroundColor = self.changedColor?.cgColor
+        }
+        let animation: CABasicAnimation = CABasicAnimation(keyPath: "opacity")
+        
+        animation.fromValue = 0.0
+        animation.toValue = 1.0
+        animation.duration = 1.0
+        
+        colorChangeLayer.add(animation, forKey: "opacity")
+         layer.addSublayer(colorChangeLayer)
+        setIcon()
     }
     
     //Функция добавляет иконку
