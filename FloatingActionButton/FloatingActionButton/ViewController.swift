@@ -15,7 +15,7 @@ class ViewController: UIViewController {
         let fab = FloatingActionButton()
         fab.add(on: self.view)
         fab.color = UIColor.yellow
-        fab.changedColor = UIColor.purple
+        fab.tappedButtonChangedColor = UIColor.purple
         fab.paddingX = 30
         fab.paddingY = 30
         fab.radius = 40

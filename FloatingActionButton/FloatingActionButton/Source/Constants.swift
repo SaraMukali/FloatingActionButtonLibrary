@@ -27,7 +27,7 @@ struct Constants {
     static let titleColor: UIColor = UIColor.white
     
     //Расстояние между вторичными кнопками
-    static let space: CGFloat = 20
+    static let  itemSpace: CGFloat = 20
     
     //Цвет вторичной кнопки
     static let itemColor: UIColor = UIColor.white
@@ -57,8 +57,8 @@ struct Constants {
     static let isCustomFrame: Bool = false
     
     //На сколько при нажатии меняется каждый канал цвета основной кнопки
-    static let colorChange: CGFloat = 20
+    static let tappedButtonColorChangeDifference: CGFloat = 20
     
     //Определенный цвет, в который перекрашивается основная кнопка при долгом нажатии
-    static let changedColor: UIColor? = nil
+    static let tappedButtonChangedColor: UIColor? = nil
 }

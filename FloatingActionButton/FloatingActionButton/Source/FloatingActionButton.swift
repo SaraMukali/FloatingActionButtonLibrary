@@ -35,7 +35,7 @@ open class FloatingActionButton: UIView {
     open var blackoutColor: UIColor = Constants.blackoutColor
     
     //Цвет изменения кнопки при долгом нажатии
-    open var changedColor: UIColor? = nil
+    open var tappedButtonChangedColor: UIColor? = Constants.tappedButtonChangedColor
     
     //Активность кнопки
     open var isActive: Bool = Constants.isActive
@@ -54,7 +54,7 @@ open class FloatingActionButton: UIView {
     }
     
     //Расстояние между вторичными кнопками
-    open var itemSpace: CGFloat = Constants.space
+    open var itemSpace: CGFloat = Constants.itemSpace
     
     //Цвет вторичной кнопки
     open var itemColor: UIColor = Constants.itemColor
@@ -69,7 +69,7 @@ open class FloatingActionButton: UIView {
     fileprivate var circleLayer: CAShapeLayer = CAShapeLayer()
     
     //Слой, меняющий цвет кнопки во время нажатия
-    fileprivate var colorChangeLayer: CAShapeLayer = CAShapeLayer()
+    fileprivate var tappedButtonColorChangeLayer: CAShapeLayer = CAShapeLayer()
         
     //Вью, на которой расположена иконка
     fileprivate var iconImageView: UIImageView = UIImageView()
@@ -223,8 +223,8 @@ open class FloatingActionButton: UIView {
     //Функция, выполняющаяся после последнего прикосновения ко вью с основной кнопкой
     override open func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
-        colorChangeLayer.removeFromSuperlayer()
-        if isTouched(touches) || colorChangeLayer.opacity == 1 {
+        tappedButtonColorChangeLayer.removeFromSuperlayer()
+        if isTouched(touches) || tappedButtonColorChangeLayer.opacity == 1 {
             toggle()
         }
     }
@@ -337,28 +337,28 @@ open class FloatingActionButton: UIView {
     //Функция меняет цвет кнопки
     fileprivate func addColorChange() {
 
-        colorChangeLayer.frame = CGRect(x: circleLayer.frame.origin.x, y: circleLayer.frame.origin.y, width: radius * 2, height: radius * 2)
+        tappedButtonColorChangeLayer.frame = CGRect(x: circleLayer.frame.origin.x, y: circleLayer.frame.origin.y, width: radius * 2, height: radius * 2)
         
         var components =  [CGFloat]()
         
         if let colorComponents = color.cgColor.components {
             colorComponents.forEach { component in
-                if component * 255.0 >= Constants.colorChange {
-                    components.append((component * 255.0 - Constants.colorChange)/255.0)
+                if component * 255.0 >= Constants.tappedButtonColorChangeDifference {
+                    components.append((component * 255.0 - Constants.tappedButtonColorChangeDifference)/255.0)
                 } else {
-                    components.append((component * 255.0 + Constants.colorChange)/255.0)
+                    components.append((component * 255.0 + Constants.tappedButtonColorChangeDifference)/255.0)
                 }
             }
         }
-        colorChangeLayer.cornerRadius = radius
+        tappedButtonColorChangeLayer.cornerRadius = radius
         
-        if let color = self.changedColor {
-            colorChangeLayer.backgroundColor = color.cgColor
+        if let color = self.tappedButtonChangedColor {
+            tappedButtonColorChangeLayer.backgroundColor = color.cgColor
         } else {
             if components.count < 4 {
-                colorChangeLayer.backgroundColor = UIColor(white: components[0], alpha: 1.0).cgColor
+                tappedButtonColorChangeLayer.backgroundColor = UIColor(white: components[0], alpha: 1.0).cgColor
             } else {
-                colorChangeLayer.backgroundColor = UIColor(red: components[0], green: components[1], blue: components[2], alpha: 1.0).cgColor
+                tappedButtonColorChangeLayer.backgroundColor = UIColor(red: components[0], green: components[1], blue: components[2], alpha: 1.0).cgColor
             }
         }
         let animation: CABasicAnimation = CABasicAnimation(keyPath: "opacity")
@@ -367,8 +367,8 @@ open class FloatingActionButton: UIView {
         animation.toValue = 1.0
         animation.duration = 1.0
         
-        colorChangeLayer.add(animation, forKey: "opacity")
-         layer.addSublayer(colorChangeLayer)
+        tappedButtonColorChangeLayer.add(animation, forKey: "opacity")
+         layer.addSublayer(tappedButtonColorChangeLayer)
         setIcon()
     }
     
