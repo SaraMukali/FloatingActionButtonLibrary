@@ -220,7 +220,7 @@ open class FloatingActionButton: UIView {
             addColorChange()
         }
     }
-    //Функция, выполняющаяся после пеоследнего прикосновения ко вью с основной кнопкой
+    //Функция, выполняющаяся после последнего прикосновения ко вью с основной кнопкой
     override open func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
         colorChangeLayer.removeFromSuperlayer()
@@ -233,7 +233,6 @@ open class FloatingActionButton: UIView {
     fileprivate func isTouched(_ touches: Set<UITouch>) -> Bool {
         return touches.count == 1 && touches.first?.tapCount == 1 && touches.first?.location(in: self) != nil
     }
-    
     
     //Функция позволяет найти тот сабвью, с которым взаимодействовал пользователь
     open override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
@@ -296,7 +295,7 @@ open class FloatingActionButton: UIView {
     func deactivate() {
         blackoutView.removeTarget(self, action: #selector(deactivate), for: UIControlEvents.touchUpInside)
         blackoutView.alpha = 0
-        
+
         isActive = false
         
         var delay = 0.0
