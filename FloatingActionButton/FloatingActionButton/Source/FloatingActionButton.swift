@@ -140,7 +140,7 @@ open class FloatingActionButton: UIView {
     //Функция добавляет вторичную кнопку в массив
     open func addItem(item: FloatingActionButtonItem) {
         let itemHeight = CGFloat(self.items.count) * (item.radius * 2 + itemSpace)
-        item.frame.origin = CGPoint(x: radius - item.radius, y: (-1) * itemHeight)
+        item.frame.origin = CGPoint(x: radius - item.radius, y: -itemHeight)
         item.radius = itemRadius
         item.alpha = 0
         item.actionButton = self
@@ -284,7 +284,7 @@ open class FloatingActionButton: UIView {
                             item.layer.transform = CATransform3DIdentity
                             item.alpha = 1
                             item.frame.origin.x = a
-                            item.frame.origin.y = (-1) * itemHeight
+                            item.frame.origin.y = -itemHeight
             }, completion: nil)
             
             delay += 0.1

@@ -119,7 +119,7 @@ open class FloatingActionButtonItem: UIView {
         titleLabel.text = title
         titleLabel.textColor = titleColor
         titleLabel.sizeToFit()
-        titleLabel.frame.origin.x = (-1) * titleLabel.frame.size.width - 10
+        titleLabel.frame.origin.x = -titleLabel.frame.size.width - 10
         titleLabel.frame.origin.y = self.radius-titleLabel.frame.size.height/2
         addSubview(titleLabel)
     }
