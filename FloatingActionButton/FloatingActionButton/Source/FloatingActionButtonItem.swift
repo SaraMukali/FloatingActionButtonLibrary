@@ -70,38 +70,26 @@ open class FloatingActionButtonItem: UIView {
     
     //Функция, выполняющаяся после первого прикосновения ко вью с основной кнопкой
     open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if touches.count == 1 {
-            let touch = touches.first
-            if touch?.tapCount == 1 {
-                if touch?.location(in: self) == nil {
-                    return
-                }
-            }
+        if touches.count == 1, let touch = touches.first, touch.tapCount == 1 {
+            return
         }
     }
-    
+
     //Функция, выполняющаяся во время подвижного прикосновения ко вью с основной кнопкой
     open override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if touches.count == 1 {
-            let touch = touches.first
-            if touch?.tapCount == 1 {
-                if touch?.location(in: self) == nil {
-                    return
-                }
-            }
+        if touches.count == 1, let touch = touches.first, touch.tapCount == 1 {
+            return
         }
     }
     
     //Функция, выполняющаяся после нажатия на вью с вторичной кнопкой
     open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if touches.count == 1 {
-            let touch = touches.first
-            if touch?.tapCount == 1 {
-                if touch?.location(in: self) == nil { return }
-                if actionButton != nil {
-                    actionButton!.deactivate()
-                }
-                handler?(self)
+        if touches.count == 1, let touch = touches.first, touch.tapCount == 1 {
+            if let button = actionButton {
+                button.deactivate()
+            }
+            if let handler = handler {
+                handler(self)
             }
         }
     }

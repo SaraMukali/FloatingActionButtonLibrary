@@ -231,7 +231,10 @@ open class FloatingActionButton: UIView {
     
     //Определение нажатия кнопки
     fileprivate func isTouched(_ touches: Set<UITouch>) -> Bool {
-        return touches.count == 1 && touches.first?.tapCount == 1 && touches.first?.location(in: self) != nil
+        if let touch = touches.first {
+            return touches.count == 1 && touch.tapCount == 1
+        }
+        return touches.count == 1
     }
     
     //Функция позволяет найти тот сабвью, с которым взаимодействовал пользователь
@@ -254,9 +257,10 @@ open class FloatingActionButton: UIView {
     
     //Состояние, когда видны затемнение экрана и вторичные кнопки
     func activate() {
-        self.superview?.insertSubview(blackoutView, aboveSubview: self)
-        self.superview?.bringSubview(toFront: self)
-        
+        if let selfSuperview = superview {
+            selfSuperview.insertSubview(blackoutView, aboveSubview: self)
+            selfSuperview.bringSubview(toFront: self)
+        }
         setBlackoutView()
         blackoutView.addTarget(self, action: #selector(deactivate), for: UIControlEvents.touchUpInside)
         if hasBlackout {
@@ -286,7 +290,9 @@ open class FloatingActionButton: UIView {
             delay += 0.1
         }
         if items.count == 0 {
-            handler?(self)
+            if let handler = handler {
+                handler(self)
+            }
             deactivate()
         }
     }
@@ -335,23 +341,25 @@ open class FloatingActionButton: UIView {
         
         var components =  [CGFloat]()
         
-        color.cgColor.components?.forEach { component in
-            if component * 255.0 >= Constants.colorChange {
-                components.append((component * 255.0 - Constants.colorChange)/255.0)
-            } else {
-                components.append((component * 255.0 + Constants.colorChange)/255.0)
+        if let colorComponents = color.cgColor.components {
+            colorComponents.forEach { component in
+                if component * 255.0 >= Constants.colorChange {
+                    components.append((component * 255.0 - Constants.colorChange)/255.0)
+                } else {
+                    components.append((component * 255.0 + Constants.colorChange)/255.0)
+                }
             }
         }
         colorChangeLayer.cornerRadius = radius
         
-        if self.changedColor == nil {
+        if let color = self.changedColor {
+            colorChangeLayer.backgroundColor = color.cgColor
+        } else {
             if components.count < 4 {
                 colorChangeLayer.backgroundColor = UIColor(white: components[0], alpha: 1.0).cgColor
             } else {
                 colorChangeLayer.backgroundColor = UIColor(red: components[0], green: components[1], blue: components[2], alpha: 1.0).cgColor
             }
-        } else {
-            colorChangeLayer.backgroundColor = self.changedColor?.cgColor
         }
         let animation: CABasicAnimation = CABasicAnimation(keyPath: "opacity")
         
@@ -401,8 +409,8 @@ open class FloatingActionButton: UIView {
     fileprivate func setRightBottomFrame() {
         var sizeVariable = UIScreen.main.bounds.size
         
-        if superview != nil {
-            sizeVariable = superview!.bounds.size
+        if let superview = superview {
+            sizeVariable = superview.bounds.size
         }
         
         frame = CGRect(
