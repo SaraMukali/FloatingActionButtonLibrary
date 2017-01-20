@@ -14,11 +14,11 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         let fab = FloatingActionButton()
         fab.add(on: self.view)
-        fab.color = UIColor.green
+        fab.color = UIColor.yellow
+        fab.tappedButtonChangedColor = UIColor.purple
         fab.paddingX = 30
         fab.paddingY = 30
         fab.radius = 40
-        fab.icon = nil
         fab.hasBlackout = true
         fab.hasShadow = true
         
@@ -27,16 +27,14 @@ class ViewController: UIViewController {
             alert.addAction(UIAlertAction(title: "No!", style: .default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
-
         
-        fab.itemRadius = 30
-        fab.itemSpace = 40
+        fab.itemSpace = 20
         
         let item = FloatingActionButtonItem()
         item.color = UIColor.blue
         item.title = "Custom"
         fab.addItem(item: item)
-        
+        fab.itemRadius = 30
         fab.addItem(title: "With title")
         
         item.titleColor = UIColor.green

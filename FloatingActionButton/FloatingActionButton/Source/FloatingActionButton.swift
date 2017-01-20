@@ -34,6 +34,9 @@ open class FloatingActionButton: UIView {
     //Цвет затемнения
     open var blackoutColor: UIColor = Constants.blackoutColor
     
+    //Цвет изменения кнопки при долгом нажатии
+    open var tappedButtonChangedColor: UIColor? = Constants.tappedButtonChangedColor
+    
     //Активность кнопки
     open var isActive: Bool = Constants.isActive
     
@@ -47,12 +50,11 @@ open class FloatingActionButton: UIView {
             items.forEach { item in
                 item.radius = itemRadius
             }
-            redrawItems()
         }
     }
     
     //Расстояние между вторичными кнопками
-    open var itemSpace: CGFloat = Constants.space
+    open var itemSpace: CGFloat = Constants.itemSpace
     
     //Цвет вторичной кнопки
     open var itemColor: UIColor = Constants.itemColor
@@ -66,6 +68,9 @@ open class FloatingActionButton: UIView {
     //Слой, позволяющий делать кнопку круглой
     fileprivate var circleLayer: CAShapeLayer = CAShapeLayer()
     
+    //Слой, меняющий цвет кнопки во время нажатия
+    fileprivate var tappedButtonColorChangeLayer: CAShapeLayer = CAShapeLayer()
+        
     //Вью, на которой расположена иконка
     fileprivate var iconImageView: UIImageView = UIImageView()
     
@@ -134,9 +139,8 @@ open class FloatingActionButton: UIView {
 
     //Функция добавляет вторичную кнопку в массив
     open func addItem(item: FloatingActionButtonItem) {
-        let bigRadius = radius > item.radius ? radius : item.radius
-        let smallRadius = radius <= item.radius ? radius : item.radius
-        item.frame.origin = CGPoint(x: bigRadius - smallRadius, y: bigRadius - smallRadius)
+        let itemHeight = CGFloat(self.items.count) * (item.radius * 2 + itemSpace)
+        item.frame.origin = CGPoint(x: radius - item.radius, y: -itemHeight)
         item.radius = itemRadius
         item.alpha = 0
         item.actionButton = self
@@ -210,17 +214,27 @@ open class FloatingActionButton: UIView {
         self.handler = handler
     }
     
-    //Функция, выполняющаяся после нажатия на вью с основной кнопкой
+    //Функция, выполняющаяся после первого прикосновения ко вью с основной кнопкой
+    open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if isTouched(touches) {
+            addColorChange()
+        }
+    }
+    //Функция, выполняющаяся после последнего прикосновения ко вью с основной кнопкой
     override open func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
-        if isTouched(touches) {
+        tappedButtonColorChangeLayer.removeFromSuperlayer()
+        if isTouched(touches) || tappedButtonColorChangeLayer.opacity == 1 {
             toggle()
         }
     }
     
     //Определение нажатия кнопки
-    open func isTouched(_ touches: Set<UITouch>) -> Bool {
-        return touches.count == 1 && touches.first?.tapCount == 1 && touches.first?.location(in: self) != nil
+    fileprivate func isTouched(_ touches: Set<UITouch>) -> Bool {
+        if let touch = touches.first {
+            return touches.count == 1 && touch.tapCount == 1
+        }
+        return touches.count == 1
     }
     
     //Функция позволяет найти тот сабвью, с которым взаимодействовал пользователь
@@ -242,10 +256,11 @@ open class FloatingActionButton: UIView {
     }
     
     //Состояние, когда видны затемнение экрана и вторичные кнопки
-    internal func activate() {
-        self.superview?.insertSubview(blackoutView, aboveSubview: self)
-        self.superview?.bringSubview(toFront: self)
-        
+    func activate() {
+        if let selfSuperview = superview {
+            selfSuperview.insertSubview(blackoutView, aboveSubview: self)
+            selfSuperview.bringSubview(toFront: self)
+        }
         setBlackoutView()
         blackoutView.addTarget(self, action: #selector(deactivate), for: UIControlEvents.touchUpInside)
         if hasBlackout {
@@ -253,37 +268,51 @@ open class FloatingActionButton: UIView {
         }
         
         isActive = true
-        
+
         var itemHeight: CGFloat = 0
+        var delay = 0.0
         for item in items {
-            if item.isHidden {
-                continue
-            }
+            if item.isHidden == true { continue }
             itemHeight += item.radius * 2 + itemSpace
-            let bigRadius = radius > item.radius ? radius : item.radius
-            let smallRadius = radius <= item.radius ? radius : item.radius
-            item.frame.origin.x = bigRadius - smallRadius
-            item.frame.origin.y = (-1) * itemHeight
-            item.alpha = 1
+            let a = radius - item.radius
+            
+            item.layer.transform = CATransform3DMakeScale(0.4, 0.4, 10)
+            UIView.animate(withDuration: (0.7 - delay), delay: delay,
+                           usingSpringWithDamping: 0.55,
+                           initialSpringVelocity: 0.3,
+                           options: UIViewAnimationOptions(), animations: { () -> Void in
+                            item.layer.transform = CATransform3DIdentity
+                            item.alpha = 1
+                            item.frame.origin.x = a
+                            item.frame.origin.y = -itemHeight
+            }, completion: nil)
+            
+            delay += 0.1
         }
         if items.count == 0 {
-            handler?(self)
+            if let handler = handler {
+                handler(self)
+            }
             deactivate()
         }
     }
     
     //Состояние, когда на экране только основная кнопка
-    internal func deactivate() {
+    func deactivate() {
         blackoutView.removeTarget(self, action: #selector(deactivate), for: UIControlEvents.touchUpInside)
         blackoutView.alpha = 0
-        
+
         isActive = false
         
+        var delay = 0.0
         for item in items.reversed() {
-            if item.isHidden {
-                continue
-            }
-            item.alpha = 0
+            if item.isHidden == true { continue }
+            UIView.animate(withDuration: 0.3, delay: delay, options: [], animations: { () -> Void in
+                item.layer.transform = CATransform3DMakeScale(0.4, 0.4, 10)
+                item.alpha = 0
+                
+            }, completion: nil)
+            delay += 0.1
         }
     }
     
@@ -303,6 +332,44 @@ open class FloatingActionButton: UIView {
         circleLayer.backgroundColor = color.cgColor
         circleLayer.cornerRadius = radius
         layer.addSublayer(circleLayer)
+    }
+    
+    //Функция меняет цвет кнопки
+    fileprivate func addColorChange() {
+
+        tappedButtonColorChangeLayer.frame = CGRect(x: circleLayer.frame.origin.x, y: circleLayer.frame.origin.y, width: radius * 2, height: radius * 2)
+        
+        var components =  [CGFloat]()
+        
+        if let colorComponents = color.cgColor.components {
+            colorComponents.forEach { component in
+                if component * 255.0 >= Constants.tappedButtonColorChangeDifference {
+                    components.append((component * 255.0 - Constants.tappedButtonColorChangeDifference)/255.0)
+                } else {
+                    components.append((component * 255.0 + Constants.tappedButtonColorChangeDifference)/255.0)
+                }
+            }
+        }
+        tappedButtonColorChangeLayer.cornerRadius = radius
+        
+        if let color = self.tappedButtonChangedColor {
+            tappedButtonColorChangeLayer.backgroundColor = color.cgColor
+        } else {
+            if components.count < 4 {
+                tappedButtonColorChangeLayer.backgroundColor = UIColor(white: components[0], alpha: 1.0).cgColor
+            } else {
+                tappedButtonColorChangeLayer.backgroundColor = UIColor(red: components[0], green: components[1], blue: components[2], alpha: 1.0).cgColor
+            }
+        }
+        let animation: CABasicAnimation = CABasicAnimation(keyPath: "opacity")
+        
+        animation.fromValue = 0.0
+        animation.toValue = 1.0
+        animation.duration = 1.0
+        
+        tappedButtonColorChangeLayer.add(animation, forKey: "opacity")
+         layer.addSublayer(tappedButtonColorChangeLayer)
+        setIcon()
     }
     
     //Функция добавляет иконку
@@ -342,8 +409,8 @@ open class FloatingActionButton: UIView {
     fileprivate func setRightBottomFrame() {
         var sizeVariable = UIScreen.main.bounds.size
         
-        if superview != nil {
-            sizeVariable = superview!.bounds.size
+        if let superview = superview {
+            sizeVariable = superview.bounds.size
         }
         
         frame = CGRect(
@@ -358,15 +425,6 @@ open class FloatingActionButton: UIView {
     fileprivate func setItemDefaults(_ item: FloatingActionButtonItem) {
         item.color = itemColor
         item.titleColor = itemTitleColor
-    }
-    
-    //Вторичные кнопки перерисовываются при измнении размера
-    fileprivate func redrawItems() {
-        for item in items {
-            let bigRadius = radius > item.radius ? radius : item.radius
-            let smallRadius = radius <= item.radius ? radius : item.radius
-            item.frame.origin = CGPoint(x: bigRadius - smallRadius, y: bigRadius - smallRadius)
-        }
     }
     
     //Опрделяется область, которая должна реагировать на взаимодействие пользователя

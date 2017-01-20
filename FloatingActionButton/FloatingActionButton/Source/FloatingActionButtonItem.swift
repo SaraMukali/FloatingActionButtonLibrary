@@ -68,27 +68,32 @@ open class FloatingActionButtonItem: UIView {
         }
     }
     
-    //Функция, выполняющаяся после нажатия на вью с вторичной кнопкой
-    open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if touches.count == 1 {
-            let touch = touches.first
-            if touch?.tapCount == 1 {
-                if touch?.location(in: self) == nil {
-                    return
-                }
-                if actionButton != nil {
-                    actionButton!.deactivate()
-                }
-                handler?(self)
-            }
+    //Функция, выполняющаяся после первого прикосновения ко вью с основной кнопкой
+    open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if touches.count == 1, let touch = touches.first, touch.tapCount == 1 {
+            return
+        }
+    }
+
+    //Функция, выполняющаяся во время подвижного прикосновения ко вью с основной кнопкой
+    open override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if touches.count == 1, let touch = touches.first, touch.tapCount == 1 {
+            return
         }
     }
     
-    //Функция, вызывающаяся при нажатии
-    open func isTouched(_ touches: Set<UITouch>) -> Bool {
-        return touches.count == 1 && touches.first?.tapCount == 1 && touches.first?.location(in: self) != nil
+    //Функция, выполняющаяся после нажатия на вью с вторичной кнопкой
+    open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if touches.count == 1, let touch = touches.first, touch.tapCount == 1 {
+            if let button = actionButton {
+                button.deactivate()
+            }
+            if let handler = handler {
+                handler(self)
+            }
+        }
     }
-    
+
     //Функция делает кнопку круглой
     fileprivate func createCircleLayer() {
         let castParent : FloatingActionButton = superview as! FloatingActionButton
@@ -114,7 +119,7 @@ open class FloatingActionButtonItem: UIView {
         titleLabel.text = title
         titleLabel.textColor = titleColor
         titleLabel.sizeToFit()
-        titleLabel.frame.origin.x = (-1) * titleLabel.frame.size.width - 10
+        titleLabel.frame.origin.x = -titleLabel.frame.size.width - 10
         titleLabel.frame.origin.y = self.radius-titleLabel.frame.size.height/2
         addSubview(titleLabel)
     }
