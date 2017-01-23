@@ -8,6 +8,14 @@
 
 import UIKit
 
+//Перечисление видов горизнотольного расположения
+public enum HorizontalPosition {
+    case left
+    case right
+    case center
+    case none
+}
+
 open class FloatingActionButton: UIView {
     
     //Радиус основной кнопки
@@ -20,7 +28,34 @@ open class FloatingActionButton: UIView {
     open var icon: UIImage? = Constants.icon
     
     //Расстояние от нижнего правого угла по горизонтали
-    open var paddingX: CGFloat = Constants.paddingX
+    open var paddingX: CGFloat = Constants.paddingX {
+        didSet {
+            switch horizontalPosition {
+            case .right:
+                paddingX = (superview?.frame.size.width)!/4 - radius
+            case .center:
+                paddingX = (superview?.frame.size.width)!/2 - radius
+            case .left:
+                paddingX = 3 * (superview?.frame.size.width)!/4 - radius
+            case .none: break
+            }
+        }
+    }
+    
+    //Горизонтальное расположение
+    open var horizontalPosition: HorizontalPosition = .none {
+        didSet {
+            switch horizontalPosition {
+            case .right:
+                paddingX = (superview?.frame.size.width)!/4 - radius
+            case .center:
+                paddingX = (superview?.frame.size.width)!/2 - radius
+            case .left:
+                paddingX = 3 * (superview?.frame.size.width)!/4 - radius
+            case .none: break
+            }
+        }
+    }
     
     //Расстояние от нижнего правого угла по вертикали
     open var paddingY: CGFloat = Constants.paddingY
@@ -411,6 +446,21 @@ open class FloatingActionButton: UIView {
         
         if let superview = superview {
             sizeVariable = superview.bounds.size
+        }
+        
+        var titlePosition: TitlePosition = .left
+        switch horizontalPosition {
+        case .right:
+            paddingX = (superview?.frame.size.width)!/4 - radius
+        case .center:
+            paddingX = (superview?.frame.size.width)!/2 - radius
+        case .left:
+            paddingX = 3 * (superview?.frame.size.width)!/4 - radius
+            titlePosition = .right
+        case .none: break
+        }
+        items.forEach { item in
+            item.titlePosition = titlePosition
         }
         
         frame = CGRect(
