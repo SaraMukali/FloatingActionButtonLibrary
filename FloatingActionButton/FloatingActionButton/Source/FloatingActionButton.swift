@@ -30,14 +30,8 @@ open class FloatingActionButton: UIView {
     //Расстояние от нижнего правого угла по горизонтали
     open var paddingX: CGFloat = Constants.paddingX {
         didSet {
-            switch horizontalPosition {
-            case .right:
-                paddingX = (superview?.frame.size.width)!/4 - radius
-            case .center:
-                paddingX = (superview?.frame.size.width)!/2 - radius
-            case .left:
-                paddingX = 3 * (superview?.frame.size.width)!/4 - radius
-            case .none: break
+            if let position = switchHorizontalPosition() {
+                paddingX = position
             }
         }
     }
@@ -45,14 +39,8 @@ open class FloatingActionButton: UIView {
     //Горизонтальное расположение
     open var horizontalPosition: HorizontalPosition = .none {
         didSet {
-            switch horizontalPosition {
-            case .right:
-                paddingX = (superview?.frame.size.width)!/4 - radius
-            case .center:
-                paddingX = (superview?.frame.size.width)!/2 - radius
-            case .left:
-                paddingX = 3 * (superview?.frame.size.width)!/4 - radius
-            case .none: break
+            if let position = switchHorizontalPosition() {
+                paddingX = position
             }
         }
     }
@@ -449,15 +437,11 @@ open class FloatingActionButton: UIView {
         }
         
         var titlePosition: TitlePosition = .left
-        switch horizontalPosition {
-        case .right:
-            paddingX = (superview?.frame.size.width)!/4 - radius
-        case .center:
-            paddingX = (superview?.frame.size.width)!/2 - radius
-        case .left:
-            paddingX = 3 * (superview?.frame.size.width)!/4 - radius
+        if let position = switchHorizontalPosition() {
+            paddingX = position
+        }
+        if horizontalPosition == .left {
             titlePosition = .right
-        case .none: break
         }
         items.forEach { item in
             item.titlePosition = titlePosition
@@ -471,6 +455,19 @@ open class FloatingActionButton: UIView {
         )
     }
 
+    //Расстояние от правого нижнего угла меняется в зависимости от выбранного расположения
+    fileprivate func switchHorizontalPosition() -> CGFloat? {
+        switch horizontalPosition {
+        case .right:
+            return (superview?.frame.size.width)!/4 - radius
+        case .center:
+            return (superview?.frame.size.width)!/2 - radius
+        case .left:
+            return 3 * (superview?.frame.size.width)!/4 - radius
+        case .none: break
+        }
+        return nil
+    }
     //Вторичной кнопке присваиваются стандартные значения
     fileprivate func setItemDefaults(_ item: FloatingActionButtonItem) {
         item.color = itemColor
