@@ -16,7 +16,6 @@ class ViewController: UIViewController {
         fab.add(on: self.view)
         fab.color = UIColor.yellow
         fab.tappedButtonChangedColor = UIColor.purple
-        fab.paddingY = 50
         fab.radius = 40
         fab.hasBlackout = true
         fab.hasShadow = true
@@ -44,6 +43,7 @@ class ViewController: UIViewController {
             self.present(alert, animated: true, completion: nil)
         }
         fab.addItem("With icon", icon: UIImage(named: "icMap"))
+        fab.paddingY = 50
         fab.paddingX = 35
     }
 }

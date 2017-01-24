@@ -483,6 +483,7 @@ open class FloatingActionButton: UIView {
         if isCustomFrame {
             width = width + paddingX
         }
+        
         let height = item.radius * 2
         return CGRect(x: x, y: y, width: width, height: height)
     }
