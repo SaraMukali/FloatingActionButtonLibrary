@@ -435,7 +435,6 @@ open class FloatingActionButton: UIView {
         if let superview = superview {
             sizeVariable = superview.bounds.size
         }
-        
         var titlePosition: TitlePosition = .left
         if horizontalPosition == .left {
             titlePosition = .right
@@ -443,7 +442,6 @@ open class FloatingActionButton: UIView {
         items.forEach { item in
             item.titlePosition = titlePosition
         }
-        
         frame = CGRect(
             x: (sizeVariable.width - radius * 2) - paddingX,
             y: (sizeVariable.height - radius * 2) - paddingY,
@@ -482,7 +480,6 @@ open class FloatingActionButton: UIView {
         if isCustomFrame {
             width = width + paddingX
         }
-        
         let height = item.radius * 2
         return CGRect(x: x, y: y, width: width, height: height)
     }
