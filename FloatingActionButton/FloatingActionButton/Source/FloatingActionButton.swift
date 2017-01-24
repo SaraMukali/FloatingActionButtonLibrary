@@ -433,12 +433,9 @@ open class FloatingActionButton: UIView {
     
     //Функция ставит основную кнопку в правом нижнем углу
     fileprivate func setRightBottomFrame() {
-        var sizeVariable = UIScreen.main.bounds.size
-        
-        if let superviewSize = superviewSize {
-            sizeVariable = superviewSize
-        }
+        let sizeVariable = superviewSize ?? UIScreen.main.bounds.size
         var titlePosition: TitlePosition = .left
+        
         if horizontalPosition == .left {
             titlePosition = .right
         }
@@ -490,8 +487,11 @@ open class FloatingActionButton: UIView {
         return CGRect(x: x, y: y, width: width, height: height)
     }
     
+    //Функция вызывается после добавления на вью, на котором будет расположена кнопка
     open override func didMoveToSuperview() {
-        superviewSize = superview?.bounds.size
+        if let superview = superview {
+            superviewSize = superview.bounds.size
+        }
     }
 }
 
