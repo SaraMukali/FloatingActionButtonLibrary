@@ -30,7 +30,7 @@ open class FloatingActionButton: UIView {
     //Расстояние от нижнего правого угла по горизонтали
     open var paddingX: CGFloat = Constants.paddingX {
         didSet {
-            if let position = switchHorizontalPosition() {
+            if let position = definedHorizontalPosition() {
                 paddingX = position
             }
         }
@@ -39,7 +39,7 @@ open class FloatingActionButton: UIView {
     //Горизонтальное расположение
     open var horizontalPosition: HorizontalPosition = .none {
         didSet {
-            if let position = switchHorizontalPosition() {
+            if let position = definedHorizontalPosition() {
                 paddingX = position
             }
         }
@@ -451,7 +451,7 @@ open class FloatingActionButton: UIView {
     }
 
     //Расстояние от правого нижнего угла меняется в зависимости от выбранного расположения
-    fileprivate func switchHorizontalPosition() -> CGFloat? {
+    fileprivate func definedHorizontalPosition() -> CGFloat? {
         if let superviewSize = superviewSize {
             let superviewWidth = superviewSize.width
             switch horizontalPosition {
