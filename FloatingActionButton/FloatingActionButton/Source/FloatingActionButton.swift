@@ -103,6 +103,9 @@ open class FloatingActionButton: UIView {
     //Функция, выполняющаяся при нажатии на основную кнопку, если нет вторичных
     fileprivate var handler: ((FloatingActionButton) -> Void)? = nil
     
+    //Размер вью, на котором расположена кнопка
+    fileprivate var superviewSize: CGSize?
+    
     //Пустой инициализатор
     public init() {
         super.init(frame: CGRect(x: 0, y: 0, width: (radius * 2), height: (radius * 2)))
@@ -432,8 +435,8 @@ open class FloatingActionButton: UIView {
     fileprivate func setRightBottomFrame() {
         var sizeVariable = UIScreen.main.bounds.size
         
-        if let superview = superview {
-            sizeVariable = superview.bounds.size
+        if let superviewSize = superviewSize {
+            sizeVariable = superviewSize
         }
         var titlePosition: TitlePosition = .left
         if horizontalPosition == .left {
@@ -452,14 +455,17 @@ open class FloatingActionButton: UIView {
 
     //Расстояние от правого нижнего угла меняется в зависимости от выбранного расположения
     fileprivate func switchHorizontalPosition() -> CGFloat? {
-        switch horizontalPosition {
-        case .right:
-            return (superview?.frame.size.width)!/4 - radius
-        case .center:
-            return (superview?.frame.size.width)!/2 - radius
-        case .left:
-            return 3 * (superview?.frame.size.width)!/4 - radius
-        case .none: break
+        if let superviewSize = superviewSize {
+            let superviewWidth = superviewSize.width
+            switch horizontalPosition {
+            case .right:
+                return superviewWidth/4 - radius
+            case .center:
+                return superviewWidth/2 - radius
+            case .left:
+                return 3 * superviewWidth/4 - radius
+            case .none: break
+            }
         }
         return nil
     }
@@ -482,6 +488,10 @@ open class FloatingActionButton: UIView {
         }
         let height = item.radius * 2
         return CGRect(x: x, y: y, width: width, height: height)
+    }
+    
+    open override func didMoveToSuperview() {
+        superviewSize = superview?.bounds.size
     }
 }
 
