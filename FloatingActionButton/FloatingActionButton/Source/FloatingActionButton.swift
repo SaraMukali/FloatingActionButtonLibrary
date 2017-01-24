@@ -437,9 +437,6 @@ open class FloatingActionButton: UIView {
         }
         
         var titlePosition: TitlePosition = .left
-//        if let position = switchHorizontalPosition() {
-//            paddingX = position
-//        }
         if horizontalPosition == .left {
             titlePosition = .right
         }
