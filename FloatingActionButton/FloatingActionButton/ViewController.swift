@@ -28,7 +28,7 @@ class ViewController: UIViewController {
         }
         
         fab.itemSpace = 20
-        fab.horizontalPosition = .center
+        fab.horizontalPosition = .left
         let item = FloatingActionButtonItem()
         item.color = UIColor.blue
         item.title = "Custom"
