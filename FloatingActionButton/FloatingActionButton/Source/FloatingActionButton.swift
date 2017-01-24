@@ -428,7 +428,7 @@ open class FloatingActionButton: UIView {
         layer.shadowOpacity = 1
     }
     
-    //Кнопка распологается в нижнем правом углу
+    //Функция ставит основную кнопку в правом нижнем углу
     fileprivate func setRightBottomFrame() {
         var sizeVariable = UIScreen.main.bounds.size
         
@@ -437,9 +437,9 @@ open class FloatingActionButton: UIView {
         }
         
         var titlePosition: TitlePosition = .left
-        if let position = switchHorizontalPosition() {
-            paddingX = position
-        }
+//        if let position = switchHorizontalPosition() {
+//            paddingX = position
+//        }
         if horizontalPosition == .left {
             titlePosition = .right
         }

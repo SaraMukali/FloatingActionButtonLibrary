@@ -28,7 +28,7 @@ class ViewController: UIViewController {
         }
         
         fab.itemSpace = 20
-        fab.horizontalPosition = .right
+        fab.horizontalPosition = .center
         let item = FloatingActionButtonItem()
         item.color = UIColor.blue
         item.title = "Custom"
@@ -45,7 +45,6 @@ class ViewController: UIViewController {
         }
         fab.addItem("With icon", icon: UIImage(named: "icMap"))
         fab.paddingX = 35
-        print("padding", fab.paddingX)
     }
 }
 
