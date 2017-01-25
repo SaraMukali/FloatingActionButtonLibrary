@@ -8,6 +8,14 @@
 
 import UIKit
 
+//Перечисление видов горизнотольного расположения
+public enum HorizontalPosition {
+    case left
+    case right
+    case center
+    case none
+}
+
 open class FloatingActionButton: UIView {
     
     //Радиус основной кнопки
@@ -20,7 +28,22 @@ open class FloatingActionButton: UIView {
     open var icon: UIImage? = Constants.icon
     
     //Расстояние от нижнего правого угла по горизонтали
-    open var paddingX: CGFloat = Constants.paddingX
+    open var paddingX: CGFloat = Constants.paddingX {
+        didSet {
+            if let position = definedHorizontalPosition() {
+                paddingX = position
+            }
+        }
+    }
+    
+    //Горизонтальное расположение
+    open var horizontalPosition: HorizontalPosition = .none {
+        didSet {
+            if let position = definedHorizontalPosition() {
+                paddingX = position
+            }
+        }
+    }
     
     //Расстояние от нижнего правого угла по вертикали
     open var paddingY: CGFloat = Constants.paddingY
@@ -79,6 +102,9 @@ open class FloatingActionButton: UIView {
     
     //Функция, выполняющаяся при нажатии на основную кнопку, если нет вторичных
     fileprivate var handler: ((FloatingActionButton) -> Void)? = nil
+    
+    //Размер вью, на котором расположена кнопка
+    fileprivate var superviewSize: CGSize?
     
     //Пустой инициализатор
     public init() {
@@ -405,14 +431,17 @@ open class FloatingActionButton: UIView {
         layer.shadowOpacity = 1
     }
     
-    //Кнопка распологается в нижнем правом углу
+    //Функция ставит основную кнопку в правом нижнем углу
     fileprivate func setRightBottomFrame() {
-        var sizeVariable = UIScreen.main.bounds.size
+        let sizeVariable = superviewSize ?? UIScreen.main.bounds.size
+        var titlePosition: TitlePosition = .left
         
-        if let superview = superview {
-            sizeVariable = superview.bounds.size
+        if horizontalPosition == .left {
+            titlePosition = .right
         }
-        
+        items.forEach { item in
+            item.titlePosition = titlePosition
+        }
         frame = CGRect(
             x: (sizeVariable.width - radius * 2) - paddingX,
             y: (sizeVariable.height - radius * 2) - paddingY,
@@ -421,6 +450,22 @@ open class FloatingActionButton: UIView {
         )
     }
 
+    //Расстояние от правого нижнего угла меняется в зависимости от выбранного расположения
+    fileprivate func definedHorizontalPosition() -> CGFloat? {
+        if let superviewSize = superviewSize {
+            let superviewWidth = superviewSize.width
+            switch horizontalPosition {
+            case .right:
+                return superviewWidth/4 - radius
+            case .center:
+                return superviewWidth/2 - radius
+            case .left:
+                return 3 * superviewWidth/4 - radius
+            case .none: break
+            }
+        }
+        return nil
+    }
     //Вторичной кнопке присваиваются стандартные значения
     fileprivate func setItemDefaults(_ item: FloatingActionButtonItem) {
         item.color = itemColor
@@ -430,8 +475,10 @@ open class FloatingActionButton: UIView {
     //Опрделяется область, которая должна реагировать на взаимодействие пользователя
     fileprivate func determineTapArea(item : FloatingActionButtonItem) -> CGRect {
         let tappableMargin : CGFloat = 30.0
-        
-        let x = item.titleLabel.frame.origin.x
+        var x = item.titleLabel.frame.origin.x
+        if item.titlePosition == .right {
+            x = item.frame.origin.x
+        }
         let y = item.bounds.origin.y
         
         var width: CGFloat = item.titleLabel.bounds.size.width + item.bounds.size.width + tappableMargin
@@ -441,6 +488,13 @@ open class FloatingActionButton: UIView {
         
         let height = item.radius * 2
         return CGRect(x: x, y: y, width: width, height: height)
+    }
+    
+    //Функция вызывается после добавления на вью, на котором будет расположена кнопка
+    open override func didMoveToSuperview() {
+        if let superview = superview {
+            superviewSize = superview.bounds.size
+        }
     }
 }
 

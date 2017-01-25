@@ -3,7 +3,7 @@
 //  KCFloatingActionButton-Sample
 //
 //  Created by Sara Mukali on 09.01.17.
-//  Copyright © 2017 kciter. All rights reserved.
+//  Copyright © 2017 Sara. All rights reserved.
 //
 
 import Foundation

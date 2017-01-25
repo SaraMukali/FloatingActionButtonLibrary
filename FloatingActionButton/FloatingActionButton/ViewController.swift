@@ -16,8 +16,6 @@ class ViewController: UIViewController {
         fab.add(on: self.view)
         fab.color = UIColor.yellow
         fab.tappedButtonChangedColor = UIColor.purple
-        fab.paddingX = 30
-        fab.paddingY = 30
         fab.radius = 40
         fab.hasBlackout = true
         fab.hasShadow = true
@@ -29,7 +27,7 @@ class ViewController: UIViewController {
         }
         
         fab.itemSpace = 20
-        
+        fab.horizontalPosition = .left
         let item = FloatingActionButtonItem()
         item.color = UIColor.blue
         item.title = "Custom"
@@ -45,6 +43,8 @@ class ViewController: UIViewController {
             self.present(alert, animated: true, completion: nil)
         }
         fab.addItem("With icon", icon: UIImage(named: "icMap"))
+        fab.paddingY = 50
+        fab.paddingX = 35
     }
 }
 

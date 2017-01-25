@@ -8,6 +8,11 @@
 
 import UIKit
 
+public enum TitlePosition {
+    case left
+    case right
+}
+
 open class FloatingActionButtonItem: UIView {
     
     //Основная кнопка
@@ -33,6 +38,9 @@ open class FloatingActionButtonItem: UIView {
     
     //Лэйбел, на котором отображается название
     open var titleLabel: UILabel = UILabel()
+    
+    //Расположение названия относительно вторичной кнопки
+    open var titlePosition: TitlePosition = .left
     
     //Вью, на которой расположена иконка
     fileprivate var iconImageView: UIImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 25, height: 25))
@@ -119,7 +127,13 @@ open class FloatingActionButtonItem: UIView {
         titleLabel.text = title
         titleLabel.textColor = titleColor
         titleLabel.sizeToFit()
-        titleLabel.frame.origin.x = -titleLabel.frame.size.width - 10
+        switch titlePosition {
+        case .right:
+            titleLabel.frame.origin.x = 80
+        case .left:
+            titleLabel.textAlignment = .left
+            titleLabel.frame.origin.x = -titleLabel.frame.size.width - 10
+        }
         titleLabel.frame.origin.y = self.radius-titleLabel.frame.size.height/2
         addSubview(titleLabel)
     }
