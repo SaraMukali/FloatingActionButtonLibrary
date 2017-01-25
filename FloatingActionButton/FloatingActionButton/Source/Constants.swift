@@ -47,13 +47,13 @@ struct Constants {
     //Наличие затемнения по нажатию на основную кнопку
     static let hasBlackout: Bool = false
     
-     //Цвет затемнения    
+    //Цвет затемнения
     static let blackoutColor: UIColor = UIColor(red: 0.0/255.0, green: 0.0/255.0, blue: 0.0/255.0, alpha: 0.5)
     
     //Прозрачность затемнения
     static let blackoutOpacity: CGFloat = 1.0
     
-    //Скорость появления затменения
+    //Длительность затменения
     static let blackoutAnimationDuration: Double = 5
     
     //Активность основной кнопки

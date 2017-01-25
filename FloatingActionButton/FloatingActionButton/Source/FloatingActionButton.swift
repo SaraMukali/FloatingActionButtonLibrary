@@ -60,7 +60,7 @@ open class FloatingActionButton: UIView {
     //Прозрачность затемнения
     open var blackoutOpacity: CGFloat = Constants.blackoutOpacity
     
-    //Скорость появления затменения
+    //Длительность затменения
     open var blackoutAnimationDuration: Double = Constants.blackoutAnimationDuration
     
     //Цвет изменения кнопки при долгом нажатии
