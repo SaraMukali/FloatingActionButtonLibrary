@@ -475,8 +475,10 @@ open class FloatingActionButton: UIView {
     //Опрделяется область, которая должна реагировать на взаимодействие пользователя
     fileprivate func determineTapArea(item : FloatingActionButtonItem) -> CGRect {
         let tappableMargin : CGFloat = 30.0
-        
-        let x = item.titleLabel.frame.origin.x
+        var x = item.titleLabel.frame.origin.x
+        if item.titlePosition == .right {
+            x = item.frame.origin.x
+        }
         let y = item.bounds.origin.y
         
         var width: CGFloat = item.titleLabel.bounds.size.width + item.bounds.size.width + tappableMargin
