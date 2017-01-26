@@ -18,6 +18,8 @@ class ViewController: UIViewController {
         fab.tappedButtonChangedColor = UIColor.purple
         fab.radius = 40
         fab.hasBlackout = true
+        fab.blackoutColor = UIColor.blue
+        fab.blackoutOpacity = 0.5
         fab.hasShadow = true
         
         fab.addAction { (item: FloatingActionButton) in

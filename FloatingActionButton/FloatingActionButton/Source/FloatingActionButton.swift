@@ -57,6 +57,12 @@ open class FloatingActionButton: UIView {
     //Цвет затемнения
     open var blackoutColor: UIColor = Constants.blackoutColor
     
+    //Прозрачность затемнения
+    open var blackoutOpacity: CGFloat = Constants.blackoutOpacity
+    
+    //Длительность затменения
+    open var blackoutAnimationDuration: Double = Constants.blackoutAnimationDuration
+    
     //Цвет изменения кнопки при долгом нажатии
     open var tappedButtonChangedColor: UIColor? = Constants.tappedButtonChangedColor
     
@@ -288,9 +294,12 @@ open class FloatingActionButton: UIView {
             selfSuperview.bringSubview(toFront: self)
         }
         setBlackoutView()
+        
         blackoutView.addTarget(self, action: #selector(deactivate), for: UIControlEvents.touchUpInside)
         if hasBlackout {
-            blackoutView.alpha = 1
+            UIView.animate(withDuration: blackoutAnimationDuration, animations: {
+                self.blackoutView.alpha = self.blackoutOpacity
+            })
         }
         
         isActive = true
