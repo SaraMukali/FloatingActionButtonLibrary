@@ -375,7 +375,9 @@ open class FloatingActionButton: UIView {
         
         var delay = 0.0
         for item in items.reversed() {
-            if item.isHidden == true { continue }
+            if item.isHidden == true {
+                continue
+            }
             UIView.animate(withDuration: 0.3, delay: delay, options: [], animations: { () -> Void in
                 item.layer.transform = CATransform3DMakeScale(0.4, 0.4, 10)
                 item.alpha = 0
@@ -402,12 +404,15 @@ open class FloatingActionButton: UIView {
         if horizontalPosition == .left {
             titlePosition = .right
         }
+        
         items.forEach { item in
             item.titlePosition = titlePosition
         }
+        
         if let position = definedHorizontalPosition() {
             paddingX = position
         }
+        
         frame = CGRect(
             x: (sizeVariable.width - radius * 2) - paddingX,
             y: (sizeVariable.height - radius * 2) - paddingY,
@@ -419,12 +424,15 @@ open class FloatingActionButton: UIView {
     //Функция добавляет дополнительные свойства кнопки
     fileprivate func setAdditionalProperties() {
         setCircleLayer()
+        
         if icon != nil {
             setIcon()
         }
+        
         if hasShadow {
             setShadow()
         }
+        
         setBlackoutView()
     }
     
@@ -461,7 +469,8 @@ open class FloatingActionButton: UIView {
     //Функция создет вью для затемнения
     fileprivate func setBlackoutView() {
         blackoutView.frame = CGRect(
-            x: 0,y: 0,
+            x: 0,
+            y: 0,
             width: UIScreen.main.bounds.width,
             height: UIScreen.main.bounds.height
         )
@@ -590,7 +599,7 @@ open class FloatingActionButton: UIView {
             superview.addObserver(self, forKeyPath: "contentOffset", options: .new, context:nil)
         } else {
             UIView.animate(withDuration: hiddenAnimationDuration, animations: {
-                self.frame.origin.y = self.superview!.bounds.size.height + Constants.shadowRadius
+                self.frame.origin.y = (self.superviewSize?.height)! + Constants.shadowRadius
             })
         }
     }
@@ -598,27 +607,28 @@ open class FloatingActionButton: UIView {
     //Отслеживает изменение точки, в которой content view отстает от scroll view
     open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         let scrollView = object as! UIScrollView
-        frame.origin.x = ((self.superview!.bounds.size.width - radius * 2) - paddingX) + scrollView.contentOffset.x
+        frame.origin.x = (((self.superviewSize?.width)! - radius * 2) - paddingX) + scrollView.contentOffset.x
         
-        if isMoving{
-            frame.origin.y = self.superview!.bounds.size.height + Constants.shadowRadius + scrollView.contentOffset.y
+        if isMoving {
+            frame.origin.y = (self.superviewSize?.height)! + Constants.shadowRadius + scrollView.contentOffset.y
             if isActive {
                 frame.origin.y += CGFloat(items.count) * (itemSpace + itemRadius * 2)
             }
         } else {
-            frame.origin.y = ((self.superview!.bounds.size.height - radius * 2) - paddingY) + scrollView.contentOffset.y
+            frame.origin.y = (((self.superviewSize?.height)! - radius * 2) - paddingY) + scrollView.contentOffset.y
         }
         
         if isAbleToBeHidden && hiddenType == .move {
             UIView.animate(withDuration: hiddenAnimationDuration, animations: {
-                self.frame.origin.y = self.superview!.bounds.size.height + Constants.shadowRadius + scrollView.contentOffset.y
+                self.frame.origin.y = (self.superviewSize?.height)! + Constants.shadowRadius + scrollView.contentOffset.y
             })
             isMoving = true
             isAbleToBeHidden = false
         }
         
         blackoutView.frame = CGRect(
-            x: scrollView.contentOffset.x, y: scrollView.contentOffset.y,
+            x: scrollView.contentOffset.x,
+            y: scrollView.contentOffset.y,
             width: UIScreen.main.bounds.width,
             height: UIScreen.main.bounds.height
         )

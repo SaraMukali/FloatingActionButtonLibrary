@@ -14,7 +14,7 @@ class TableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        fab.color = UIColor.yellow
+        fab.color = UIColor.green
         
         fab.radius = 40
         fab.isSticky = true

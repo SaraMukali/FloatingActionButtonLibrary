@@ -15,7 +15,6 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         fab.add(on: self.view)
         fab.color = UIColor.yellow
-        fab.tappedButtonChangedColor = UIColor.purple
         fab.radius = 40
         fab.hasBlackout = true
         fab.blackoutColor = UIColor.blue
@@ -48,7 +47,8 @@ class ViewController: UIViewController {
         fab.paddingY = 50
         fab.paddingX = 35
     }
-    @IBAction func moveFAB(_ sender: Any) {
+
+    @IBAction func moveFAB(_ sender: UIButton) {
         fab.setHidden(.move)
     }
 }

@@ -14,7 +14,6 @@ public enum TitlePosition {
 }
 
 open class FloatingActionButtonItem: UIView {
-    
     //Основная кнопка
     open weak var actionButton: FloatingActionButton?
     
