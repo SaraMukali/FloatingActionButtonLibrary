@@ -139,6 +139,9 @@ open class FloatingActionButton: UIView {
     //Вью, на котором расположен кнопка, наследуется от UIScrollView
     fileprivate var isOnScrollView = Constants.isOnScrollView
     
+    //Есть необходимость в отслеживании contentOffset
+    fileprivate var hasToAddObserver: Bool = false
+    
     //Значения основных параметров кнопки определены
     fileprivate var isDrawn = Constants.isDrawn
     
@@ -198,10 +201,8 @@ open class FloatingActionButton: UIView {
         if isAbleToBeHidden {
             setHidden(hiddenType)
         }
-        
-        if let superview = superview, isOnScrollView, isSticky {
-            superview.addObserver(self, forKeyPath: "contentOffset", options: .new, context:nil)
-        }
+
+        tryToAddObserver()
     }
 
     //Функция добавляет вторичную кнопку в массив
@@ -595,12 +596,21 @@ open class FloatingActionButton: UIView {
     
     //Кнопка движется со основного вью и исчезает
     fileprivate func moveFromView() {
-        if let superview = superview, isOnScrollView, isSticky {
-            superview.addObserver(self, forKeyPath: "contentOffset", options: .new, context:nil)
-        } else {
+        tryToAddObserver()
+        if !hasToAddObserver {
             UIView.animate(withDuration: hiddenAnimationDuration, animations: {
                 self.frame.origin.y = (self.superviewSize?.height)! + Constants.shadowRadius
             })
+        }
+    }
+    
+    //Функция добавляет наблюдатель за изменением contentOffset, если есть такая необходимость
+    fileprivate func tryToAddObserver() {
+        if let superview = superview {
+            hasToAddObserver = isOnScrollView && isSticky
+            if hasToAddObserver {
+                superview.addObserver(self, forKeyPath: "contentOffset", options: .new, context:nil)
+            }
         }
     }
     
@@ -633,6 +643,5 @@ open class FloatingActionButton: UIView {
             height: UIScreen.main.bounds.height
         )
     }
-
 }
 

@@ -39,7 +39,7 @@ open class FloatingActionButtonItem: UIView {
     open var titleLabel: UILabel = UILabel()
     
     //Расположение названия относительно вторичной кнопки
-    open var titlePosition: TitlePosition = .left 
+    open var titlePosition: TitlePosition = .left
     
     //Вью, на которой расположена иконка
     fileprivate var iconImageView: UIImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 25, height: 25))
