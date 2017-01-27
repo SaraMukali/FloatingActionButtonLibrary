@@ -10,9 +10,9 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    var fab = FloatingActionButton()
     override func viewDidLoad() {
         super.viewDidLoad()
-        let fab = FloatingActionButton()
         fab.add(on: self.view)
         fab.color = UIColor.yellow
         fab.tappedButtonChangedColor = UIColor.purple
@@ -47,6 +47,9 @@ class ViewController: UIViewController {
         fab.addItem("With icon", icon: UIImage(named: "icMap"))
         fab.paddingY = 50
         fab.paddingX = 35
+    }
+    @IBAction func moveFAB(_ sender: Any) {
+        fab.setHidden(.move)
     }
 }
 

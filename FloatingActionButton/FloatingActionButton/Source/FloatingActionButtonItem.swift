@@ -40,7 +40,7 @@ open class FloatingActionButtonItem: UIView {
     open var titleLabel: UILabel = UILabel()
     
     //Расположение названия относительно вторичной кнопки
-    open var titlePosition: TitlePosition = .left
+    open var titlePosition: TitlePosition = .left 
     
     //Вью, на которой расположена иконка
     fileprivate var iconImageView: UIImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 25, height: 25))
@@ -64,6 +64,7 @@ open class FloatingActionButtonItem: UIView {
         
         self.layer.shouldRasterize = true
         self.layer.rasterizationScale = UIScreen.main.scale
+        self.frame =  CGRect(x: 0, y: 0, width: radius * 2, height: radius * 2)
         createCircleLayer()
         setShadow()
         
@@ -129,7 +130,7 @@ open class FloatingActionButtonItem: UIView {
         titleLabel.sizeToFit()
         switch titlePosition {
         case .right:
-            titleLabel.frame.origin.x = 80
+            titleLabel.frame.origin.x = self.frame.size.width + 10
         case .left:
             titleLabel.textAlignment = .left
             titleLabel.frame.origin.x = -titleLabel.frame.size.width - 10

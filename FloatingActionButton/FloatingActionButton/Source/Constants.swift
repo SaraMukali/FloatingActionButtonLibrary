@@ -44,6 +44,9 @@ struct Constants {
     //Наличие тени основной и вторичной кнопок
     static let hasShadow: Bool = true
     
+    //Радиус тени кнопки
+    static let shadowRadius: CGFloat = 10
+    
     //Наличие затемнения по нажатию на основную кнопку
     static let hasBlackout: Bool = false
     
@@ -67,4 +70,22 @@ struct Constants {
     
     //Определенный цвет, в который перекрашивается основная кнопка при долгом нажатии
     static let tappedButtonChangedColor: UIColor? = nil
+    
+    //Состояние, при котором кнопка не движется вместе со вью, на котором она располжена
+    static let isSticky: Bool = true
+    
+    //Вью, на котором расположен кнопка, наследуется от UIScrollView
+    static let isOnScrollView = false
+    
+    //Значения основных параметров кнопки определены
+    static let isDrawn = false
+    
+    //Способность кнопки скрываться
+    static let isAbleToBeHidden = false
+    
+    //Кнопка в состоянии движения
+    static let isMoving = false
+    
+    //Длительность исчезновения кнопки
+    static let hiddenAnimationDuration: Double = 1
 }
