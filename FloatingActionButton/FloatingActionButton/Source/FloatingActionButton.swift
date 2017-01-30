@@ -104,7 +104,13 @@ open class FloatingActionButton: UIView {
     open var items: [FloatingActionButtonItem] = []
     
     //Радиус вторичной кнопки
-    open var itemRadius: CGFloat = Constants.radius
+    open var itemRadius: CGFloat = Constants.radius {
+        didSet {
+            for item in items {
+                item.radius = itemRadius
+            }
+        }
+    }
     
     //Расстояние между вторичными кнопками
     open var itemSpace: CGFloat = Constants.itemSpace
@@ -146,7 +152,7 @@ open class FloatingActionButton: UIView {
     fileprivate var isDrawn = Constants.isDrawn
     
     //Способность кнопки скрываться
-    fileprivate var isAbleToBeHidden = Constants.isAbleToBeHidden
+    fileprivate var canBeHidden = Constants.canBeHidden
 
     //Кнопка в состоянии движения
     fileprivate var isMoving = Constants.isMoving
@@ -198,7 +204,7 @@ open class FloatingActionButton: UIView {
         
         setAdditionalProperties()
         
-        if isAbleToBeHidden {
+        if canBeHidden {
             setHidden(hiddenType)
         }
 
@@ -207,7 +213,7 @@ open class FloatingActionButton: UIView {
 
     //Функция добавляет вторичную кнопку в массив
     open func addItem(item: FloatingActionButtonItem) {
-        let itemHeight = CGFloat(self.items.count) * (item.radius * 2 + itemSpace)
+        let itemHeight = CGFloat(items.count) * (item.radius * 2 + itemSpace)
         item.frame.origin = CGPoint(x: radius - item.radius, y: -itemHeight)
         item.radius = itemRadius
         item.alpha = 0
@@ -376,7 +382,7 @@ open class FloatingActionButton: UIView {
         
         var delay = 0.0
         for item in items.reversed() {
-            if item.isHidden == true {
+            if item.isHidden {
                 continue
             }
             UIView.animate(withDuration: 0.3, delay: delay, options: [], animations: { () -> Void in
@@ -456,7 +462,7 @@ open class FloatingActionButton: UIView {
             width: iconImageView.frame.size.width,
             height: iconImageView.frame.size.height
         )
-        addSubview(iconImageView)
+        //addSubview(iconImageView)
     }
     
     //Функция добавляет тень к основной кнопке
@@ -498,7 +504,7 @@ open class FloatingActionButton: UIView {
         }
         tappedButtonColorChangeLayer.cornerRadius = radius
         
-        if let color = self.tappedButtonChangedColor {
+        if let color = tappedButtonChangedColor {
             tappedButtonColorChangeLayer.backgroundColor = color.cgColor
         } else {
             if components.count < 4 {
@@ -570,13 +576,13 @@ open class FloatingActionButton: UIView {
     
     //Спрятать кнопку
     open func setHidden() {
-        self.alpha = 0
+        alpha = 0
     }
     
     //Спрятать кнопку анимированно
     open func setHidden(_ type: HiddenType) {
-        isAbleToBeHidden = true
-        self.hiddenType = type
+        canBeHidden = true
+        hiddenType = type
         if isDrawn {
             switch hiddenType {
             case .alpha:
@@ -617,23 +623,23 @@ open class FloatingActionButton: UIView {
     //Отслеживает изменение точки, в которой content view отстает от scroll view
     open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         let scrollView = object as! UIScrollView
-        frame.origin.x = (((self.superviewSize?.width)! - radius * 2) - paddingX) + scrollView.contentOffset.x
+        frame.origin.x = (((superviewSize?.width)! - radius * 2) - paddingX) + scrollView.contentOffset.x
         
         if isMoving {
-            frame.origin.y = (self.superviewSize?.height)! + Constants.shadowRadius + scrollView.contentOffset.y
+            frame.origin.y = (superviewSize?.height)! + Constants.shadowRadius + scrollView.contentOffset.y
             if isActive {
                 frame.origin.y += CGFloat(items.count) * (itemSpace + itemRadius * 2)
             }
         } else {
-            frame.origin.y = (((self.superviewSize?.height)! - radius * 2) - paddingY) + scrollView.contentOffset.y
+            frame.origin.y = (((superviewSize?.height)! - radius * 2) - paddingY) + scrollView.contentOffset.y
         }
         
-        if isAbleToBeHidden && hiddenType == .move {
+        if canBeHidden && hiddenType == .move {
             UIView.animate(withDuration: hiddenAnimationDuration, animations: {
                 self.frame.origin.y = (self.superviewSize?.height)! + Constants.shadowRadius + scrollView.contentOffset.y
             })
             isMoving = true
-            isAbleToBeHidden = false
+            canBeHidden = false
         }
         
         blackoutView.frame = CGRect(

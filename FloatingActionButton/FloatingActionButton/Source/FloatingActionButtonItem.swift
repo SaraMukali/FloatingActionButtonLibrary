@@ -61,9 +61,9 @@ open class FloatingActionButtonItem: UIView {
     open override func draw(_ rect: CGRect) {
         super.draw(rect)
         
-        self.layer.shouldRasterize = true
-        self.layer.rasterizationScale = UIScreen.main.scale
-        self.frame =  CGRect(x: 0, y: 0, width: radius * 2, height: radius * 2)
+        layer.shouldRasterize = true
+        layer.rasterizationScale = UIScreen.main.scale
+        frame =  CGRect(x: 0, y: 0, width: radius * 2, height: radius * 2)
         createCircleLayer()
         setShadow()
         
@@ -129,12 +129,12 @@ open class FloatingActionButtonItem: UIView {
         titleLabel.sizeToFit()
         switch titlePosition {
         case .right:
-            titleLabel.frame.origin.x = self.frame.size.width + 10
+            titleLabel.frame.origin.x = frame.size.width + 10
         case .left:
             titleLabel.textAlignment = .left
             titleLabel.frame.origin.x = -titleLabel.frame.size.width - 10
         }
-        titleLabel.frame.origin.y = self.radius-titleLabel.frame.size.height/2
+        titleLabel.frame.origin.y = radius-titleLabel.frame.size.height/2
         addSubview(titleLabel)
     }
     

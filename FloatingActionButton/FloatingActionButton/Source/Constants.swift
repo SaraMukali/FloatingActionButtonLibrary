@@ -81,7 +81,7 @@ struct Constants {
     static let isDrawn = false
     
     //Способность кнопки скрываться
-    static let isAbleToBeHidden = false
+    static let canBeHidden = false
     
     //Кнопка в состоянии движения
     static let isMoving = false
