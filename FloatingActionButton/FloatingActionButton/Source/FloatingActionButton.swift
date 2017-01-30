@@ -605,7 +605,9 @@ open class FloatingActionButton: UIView {
         tryToAddObserver()
         if !hasToAddObserver {
             UIView.animate(withDuration: hiddenAnimationDuration, animations: {
-                self.frame.origin.y = (self.superviewSize?.height)! + Constants.shadowRadius
+                if let size = self.superviewSize {
+                    self.frame.origin.y = size.height + Constants.shadowRadius
+                }
             })
         }
     }
@@ -623,20 +625,27 @@ open class FloatingActionButton: UIView {
     //Отслеживает изменение точки, в которой content view отстает от scroll view
     open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         let scrollView = object as! UIScrollView
-        frame.origin.x = (((superviewSize?.width)! - radius * 2) - paddingX) + scrollView.contentOffset.x
-        
+        if let size = superviewSize {
+            frame.origin.x = ((size.width - radius * 2) - paddingX) + scrollView.contentOffset.x
+        }
         if isMoving {
-            frame.origin.y = (superviewSize?.height)! + Constants.shadowRadius + scrollView.contentOffset.y
+            if let size = superviewSize {
+                frame.origin.y = size.height + Constants.shadowRadius + scrollView.contentOffset.y
+            }
             if isActive {
                 frame.origin.y += CGFloat(items.count) * (itemSpace + itemRadius * 2)
             }
         } else {
-            frame.origin.y = (((superviewSize?.height)! - radius * 2) - paddingY) + scrollView.contentOffset.y
+            if let size = superviewSize {
+                frame.origin.y = ((size.height - radius * 2) - paddingY) + scrollView.contentOffset.y
+            }
         }
         
         if canBeHidden && hiddenType == .move {
             UIView.animate(withDuration: hiddenAnimationDuration, animations: {
-                self.frame.origin.y = (self.superviewSize?.height)! + Constants.shadowRadius + scrollView.contentOffset.y
+                if let size = self.superviewSize {
+                    self.frame.origin.y = size.height + Constants.shadowRadius + scrollView.contentOffset.y
+                }
             })
             isMoving = true
             canBeHidden = false
