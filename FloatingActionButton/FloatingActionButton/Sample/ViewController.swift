@@ -48,7 +48,7 @@ class ViewController: UIViewController {
         fab.paddingX = 35
     }
 
-    @IBAction func moveFAB(sender: UIButton) {
+    @IBAction func moveFAB(_ sender: UIButton) {
         fab.setHidden(.move)
     }
 }

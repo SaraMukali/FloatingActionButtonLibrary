@@ -2,44 +2,41 @@
 //  TableViewController.swift
 //  FloatingActionButton
 //
-//  Created by Sara on 1/25/17.
+//  Created by Sara on 1/31/17.
 //  Copyright © 2017 Sara. All rights reserved.
 //
 
 import UIKit
 
-class TableViewController: UITableViewController {
-    
+class TableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+
     var fab = FloatingActionButton()
     
+    @IBOutlet weak var tableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        fab.add(on: self.view)
         fab.color = UIColor.green
-        
+        fab.tappedButtonChangedColor = UIColor.darkGray
         fab.radius = 40
-        fab.isSticky = true
-        fab.paddingY = 100
         fab.hasBlackout = true
-        fab.tappedButtonChangedColor = UIColor.purple
-        
+        fab.blackoutOpacity = 0.5
         fab.hasShadow = true
-        fab.horizontalPosition = .left
+        
         fab.addAction { (item: FloatingActionButton) in
             let alert = UIAlertController(title: "Hello!", message: "Do you want to continue?", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "No!", style: .default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
         
-        fab.itemRadius = 25
         fab.itemSpace = 20
-        
+        fab.horizontalPosition = .left
         let item = FloatingActionButtonItem()
         item.color = UIColor.blue
         item.title = "Custom"
         fab.addItem(item: item)
-        
+        fab.itemRadius = 30
         fab.addItem(title: "With title")
-        fab.add(on: self.view)
         
         item.titleColor = UIColor.green
         
@@ -49,24 +46,27 @@ class TableViewController: UITableViewController {
             self.present(alert, animated: true, completion: nil)
         }
         fab.addItem("With icon", icon: UIImage(named: "icMap"))
-        
+        fab.paddingY = 50
+        fab.paddingX = 35
+
     }
     
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 50
     }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell")
+        cell?.textLabel?.text = String(indexPath.row)
         
-        if indexPath.row == 49 {
-            fab.color = UIColor.brown
+        if indexPath.row == 29 {
             fab.setHidden(.move)
         }
-        return cell
+        
+        return cell!
     }
 }

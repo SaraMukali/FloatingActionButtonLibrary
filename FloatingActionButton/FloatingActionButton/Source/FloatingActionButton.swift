@@ -142,9 +142,6 @@ open class FloatingActionButton: UIView {
     //Размер вью, на котором расположена кнопка
     fileprivate var superviewSize: CGSize?
     
-    //Вью, на котором расположен кнопка, наследуется от UIScrollView
-    fileprivate var isOnScrollView = Constants.isOnScrollView
-    
     //Есть необходимость в отслеживании contentOffset
     fileprivate var hasToAddObserver: Bool = false
     
@@ -207,8 +204,6 @@ open class FloatingActionButton: UIView {
         if canBeHidden {
             setHidden(hiddenType)
         }
-
-        tryToAddObserver()
     }
 
     //Функция добавляет вторичную кнопку в массив
@@ -462,7 +457,7 @@ open class FloatingActionButton: UIView {
             width: iconImageView.frame.size.width,
             height: iconImageView.frame.size.height
         )
-        //addSubview(iconImageView)
+        addSubview(iconImageView)
     }
     
     //Функция добавляет тень к основной кнопке
@@ -520,7 +515,7 @@ open class FloatingActionButton: UIView {
         animation.duration = 1.0
         
         tappedButtonColorChangeLayer.add(animation, forKey: "opacity")
-         layer.addSublayer(tappedButtonColorChangeLayer)
+        layer.addSublayer(tappedButtonColorChangeLayer)
         setIcon()
     }
 
@@ -569,9 +564,6 @@ open class FloatingActionButton: UIView {
         if let superview = superview {
             superviewSize = superview.bounds.size
         }
-        if superview is UIScrollView {
-            isOnScrollView = true
-        }
     }
     
     //Спрятать кнопку
@@ -602,61 +594,11 @@ open class FloatingActionButton: UIView {
     
     //Кнопка движется со основного вью и исчезает
     fileprivate func moveFromView() {
-        tryToAddObserver()
-        if !hasToAddObserver {
-            UIView.animate(withDuration: hiddenAnimationDuration, animations: {
-                if let size = self.superviewSize {
-                    self.frame.origin.y = size.height + Constants.shadowRadius
-                }
-            })
-        }
-    }
-    
-    //Функция добавляет наблюдатель за изменением contentOffset, если есть такая необходимость
-    fileprivate func tryToAddObserver() {
-        if let superview = superview {
-            hasToAddObserver = isOnScrollView && isSticky
-            if hasToAddObserver {
-                superview.addObserver(self, forKeyPath: "contentOffset", options: .new, context:nil)
+        UIView.animate(withDuration: hiddenAnimationDuration, animations: {
+            if let size = self.superviewSize {
+                self.frame.origin.y = size.height + Constants.shadowRadius
             }
-        }
-    }
-    
-    //Отслеживает изменение точки, в которой content view отстает от scroll view
-    open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        let scrollView = object as! UIScrollView
-        if let size = superviewSize {
-            frame.origin.x = ((size.width - radius * 2) - paddingX) + scrollView.contentOffset.x
-        }
-        if isMoving {
-            if let size = superviewSize {
-                frame.origin.y = size.height + Constants.shadowRadius + scrollView.contentOffset.y
-            }
-            if isActive {
-                frame.origin.y += CGFloat(items.count) * (itemSpace + itemRadius * 2)
-            }
-        } else {
-            if let size = superviewSize {
-                frame.origin.y = ((size.height - radius * 2) - paddingY) + scrollView.contentOffset.y
-            }
-        }
-        
-        if canBeHidden && hiddenType == .move {
-            UIView.animate(withDuration: hiddenAnimationDuration, animations: {
-                if let size = self.superviewSize {
-                    self.frame.origin.y = size.height + Constants.shadowRadius + scrollView.contentOffset.y
-                }
-            })
-            isMoving = true
-            canBeHidden = false
-        }
-        
-        blackoutView.frame = CGRect(
-            x: scrollView.contentOffset.x,
-            y: scrollView.contentOffset.y,
-            width: UIScreen.main.bounds.width,
-            height: UIScreen.main.bounds.height
-        )
+        })
     }
 }
 
