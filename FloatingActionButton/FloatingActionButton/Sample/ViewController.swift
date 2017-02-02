@@ -49,7 +49,7 @@ class ViewController: UIViewController {
     }
 
     @IBAction func moveFAB(_ sender: UIButton) {
-        fab.setHidden(.move)
+        fab.setHidden(.alpha)
     }
 }
 

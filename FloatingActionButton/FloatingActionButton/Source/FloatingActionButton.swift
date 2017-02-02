@@ -91,9 +91,6 @@ open class FloatingActionButton: UIView {
     //Активность кнопки
     open var isActive: Bool = Constants.isActive
     
-    //Состояние, при котором кнопка не движется вместе со вью, на котором она располжена
-    open var isSticky: Bool = Constants.isSticky
-    
     //Вид скрытия кнопки
     open var hiddenType: HiddenType = .alpha
     
@@ -150,9 +147,6 @@ open class FloatingActionButton: UIView {
     
     //Способность кнопки скрываться
     fileprivate var canBeHidden = Constants.canBeHidden
-
-    //Кнопка в состоянии движения
-    fileprivate var isMoving = Constants.isMoving
     
     //Пустой инициализатор
     public init() {

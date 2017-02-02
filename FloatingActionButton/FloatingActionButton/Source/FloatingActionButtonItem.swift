@@ -129,10 +129,10 @@ open class FloatingActionButtonItem: UIView {
         titleLabel.sizeToFit()
         switch titlePosition {
         case .right:
-            titleLabel.frame.origin.x = frame.size.width + 10
+            titleLabel.frame.origin.x = frame.size.width + Constants.spaceBetweenItemAndTitle
         case .left:
             titleLabel.textAlignment = .left
-            titleLabel.frame.origin.x = -titleLabel.frame.size.width - 10
+            titleLabel.frame.origin.x = -titleLabel.frame.size.width - Constants.spaceBetweenItemAndTitle
         }
         titleLabel.frame.origin.y = radius-titleLabel.frame.size.height/2
         addSubview(titleLabel)

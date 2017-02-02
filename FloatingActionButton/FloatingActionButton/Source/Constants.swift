@@ -27,13 +27,15 @@ struct Constants {
     static let titleColor: UIColor = UIColor.white
     
     //Расстояние между вторичными кнопками
-    static let  itemSpace: CGFloat = 20
+    static let itemSpace: CGFloat = 20
     
     //Цвет вторичной кнопки
     static let itemColor: UIColor = UIColor.white
     
     //Иконка вторичной кнопки
     static let itemIcon: UIImage? = nil
+    
+    static let spaceBetweenItemAndTitle: CGFloat = 10
     
     //Расстояние от правого нижнего угла по горизонтали
     static let paddingX: CGFloat = 20
@@ -71,20 +73,11 @@ struct Constants {
     //Определенный цвет, в который перекрашивается основная кнопка при долгом нажатии
     static let tappedButtonChangedColor: UIColor? = nil
     
-    //Состояние, при котором кнопка не движется вместе со вью, на котором она располжена
-    static let isSticky: Bool = true
-    
-    //Вью, на котором расположен кнопка, наследуется от UIScrollView
-    static let isOnScrollView = false
-    
     //Значения основных параметров кнопки определены
     static let isDrawn = false
     
     //Способность кнопки скрываться
     static let canBeHidden = false
-    
-    //Кнопка в состоянии движения
-    static let isMoving = false
     
     //Длительность исчезновения кнопки
     static let hiddenAnimationDuration: Double = 1
