@@ -139,9 +139,6 @@ open class FloatingActionButton: UIView {
     //Размер вью, на котором расположена кнопка
     fileprivate var superviewSize: CGSize?
     
-    //Есть необходимость в отслеживании contentOffset
-    fileprivate var hasToAddObserver: Bool = false
-    
     //Значения основных параметров кнопки определены
     fileprivate var isDrawn = Constants.isDrawn
     
