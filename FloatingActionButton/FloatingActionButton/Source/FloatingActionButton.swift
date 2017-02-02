@@ -94,9 +94,6 @@ open class FloatingActionButton: UIView {
     //Вид скрытия кнопки
     open var hiddenType: HiddenType = .alpha
     
-    //Длительность исчезновения кнопки
-    open var hiddenAnimationDuration: Double = Constants.hiddenAnimationDuration
-    
     //Массив из вторичных кнопок
     open var items: [FloatingActionButtonItem] = []
     
@@ -144,6 +141,9 @@ open class FloatingActionButton: UIView {
     
     //Способность кнопки скрываться
     fileprivate var canBeHidden = Constants.canBeHidden
+    
+    //Длительность исчезновения кнопки
+    fileprivate var hiddenAnimationDuration: Double = Constants.hiddenAnimationDuration
     
     //Пустой инициализатор
     public init() {
@@ -193,7 +193,7 @@ open class FloatingActionButton: UIView {
         setAdditionalProperties()
         
         if canBeHidden {
-            setHidden(hiddenType)
+            setHidden(withType: hiddenType, withAnimationDuration: hiddenAnimationDuration)
         }
     }
 
@@ -563,9 +563,10 @@ open class FloatingActionButton: UIView {
     }
     
     //Спрятать кнопку анимированно
-    open func setHidden(_ type: HiddenType) {
+    open func setHidden(withType type: HiddenType, withAnimationDuration duration: Double) {
         canBeHidden = true
         hiddenType = type
+        hiddenAnimationDuration = duration
         if isDrawn {
             switch hiddenType {
             case .alpha:
@@ -573,7 +574,13 @@ open class FloatingActionButton: UIView {
             case .move:
                 moveFromView()
             }
+            canBeHidden = false
         }
+    }
+    
+    open func sjgtHiddenAnimationDuration(_ duration: Double) {
+        hiddenAnimationDuration = duration
+        setNeedsDisplay()
     }
     
     //Кнопка меняет прозрачность и исчезает
