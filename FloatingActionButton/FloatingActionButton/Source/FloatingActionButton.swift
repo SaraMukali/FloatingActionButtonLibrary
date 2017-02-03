@@ -20,6 +20,7 @@ public enum HorizontalPosition {
 public enum HiddenType {
     case alpha
     case move
+    case none
 }
 
 open class FloatingActionButton: UIView {
@@ -93,6 +94,9 @@ open class FloatingActionButton: UIView {
     
     //Вид скрытия кнопки
     open var hiddenType: HiddenType = .alpha
+    
+    //Кнопка спрятана
+    open var isHiddenSet: Bool = Constants.isHiddenSet
     
     //Массив из вторичных кнопок
     open var items: [FloatingActionButtonItem] = []
@@ -561,40 +565,64 @@ open class FloatingActionButton: UIView {
     open func setHidden() {
         alpha = 0
     }
-    
+
     //Спрятать кнопку анимированно
-    open func setHidden(withType type: HiddenType, withAnimationDuration duration: Double) {
+    open func setHidden(withType type: HiddenType, withAnimationDuration duration: Double)  {
         canBeHidden = true
         hiddenType = type
         hiddenAnimationDuration = duration
         if isDrawn {
             switch hiddenType {
             case .alpha:
-                changeAlpha()
+                if !isHiddenSet {
+                    changeAlpha()
+                }
             case .move:
                 moveFromView()
+            case .none:
+                break
             }
-            canBeHidden = false
         }
+        isHiddenSet = true
     }
     
-    open func sjgtHiddenAnimationDuration(_ duration: Double) {
-        hiddenAnimationDuration = duration
-        setNeedsDisplay()
+    //Вернуть кнопку
+    open func removeHidden() {
+        switch hiddenType {
+        case .alpha:
+            if isHiddenSet {
+                changeAlpha()
+            }
+        case .move:
+            moveToView()
+        case .none:
+            self.alpha = 1
+        }
+        isHiddenSet = false
     }
     
-    //Кнопка меняет прозрачность и исчезает
+    
+    //Кнопка исчезает или появляется, меняя прозрачность
     fileprivate func changeAlpha() {
         UIView.animate(withDuration: hiddenAnimationDuration, animations: {
-            self.alpha = 0
+            self.alpha = abs(self.alpha - 1)
         })
     }
     
-    //Кнопка движется со основного вью и исчезает
+    //Кнопка движется вниз из основного вью и исчезает
     fileprivate func moveFromView() {
         UIView.animate(withDuration: hiddenAnimationDuration, animations: {
             if let size = self.superviewSize {
                 self.frame.origin.y = size.height + Constants.shadowRadius
+            }
+        })
+    }
+    
+    //Кнопка появляется, двигаясь снизу
+    fileprivate func moveToView() {
+        UIView.animate(withDuration: hiddenAnimationDuration, animations: {
+            if let size = self.superviewSize {
+                self.frame.origin.y = size.height - self.radius * 2  - Constants.shadowRadius - self.paddingY
             }
         })
     }

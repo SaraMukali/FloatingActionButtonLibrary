@@ -81,4 +81,7 @@ struct Constants {
     
     //Длительность исчезновения кнопки
     static let hiddenAnimationDuration: Double = 1
+    
+    //Кнопка спрятана
+    static let isHiddenSet: Bool = false
 }

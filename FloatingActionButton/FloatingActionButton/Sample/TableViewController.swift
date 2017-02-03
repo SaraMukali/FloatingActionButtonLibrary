@@ -63,8 +63,12 @@ class TableViewController: UIViewController, UITableViewDataSource, UITableViewD
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell")
         cell?.textLabel?.text = String(indexPath.row)
         
-        if indexPath.row == 29 {
+        if indexPath.row == 30 {
             fab.setHidden(withType: .move, withAnimationDuration: 1)
+        }
+        
+        if indexPath.row == 40 {
+            fab.removeHidden()
         }
         
         return cell!

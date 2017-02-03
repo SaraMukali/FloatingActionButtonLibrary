@@ -51,5 +51,9 @@ class ViewController: UIViewController {
     @IBAction func moveFAB(_ sender: UIButton) {
         fab.setHidden(withType: .alpha, withAnimationDuration: 1)
     }
+    
+    @IBAction func returnFAB(_ sender: UIButton) {
+        fab.removeHidden()
+    }
 }
 

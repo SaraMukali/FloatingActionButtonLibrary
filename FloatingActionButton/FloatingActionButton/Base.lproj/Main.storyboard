@@ -37,6 +37,14 @@
                                     <segue destination="yOd-56-Aze" kind="show" id="1Ce-cF-Lkj"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yg8-a9-Gvj">
+                                <rect key="frame" x="149" y="300" width="77" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Return FAB"/>
+                                <connections>
+                                    <action selector="returnFAB:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Gx3-rx-ge8"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
