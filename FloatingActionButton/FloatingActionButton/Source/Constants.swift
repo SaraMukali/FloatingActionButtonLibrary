@@ -27,13 +27,15 @@ struct Constants {
     static let titleColor: UIColor = UIColor.white
     
     //Расстояние между вторичными кнопками
-    static let  itemSpace: CGFloat = 20
+    static let itemSpace: CGFloat = 20
     
     //Цвет вторичной кнопки
     static let itemColor: UIColor = UIColor.white
     
     //Иконка вторичной кнопки
     static let itemIcon: UIImage? = nil
+    
+    static let spaceBetweenItemAndTitle: CGFloat = 10
     
     //Расстояние от правого нижнего угла по горизонтали
     static let paddingX: CGFloat = 20
@@ -43,6 +45,9 @@ struct Constants {
     
     //Наличие тени основной и вторичной кнопок
     static let hasShadow: Bool = true
+    
+    //Радиус тени кнопки
+    static let shadowRadius: CGFloat = 10
     
     //Наличие затемнения по нажатию на основную кнопку
     static let hasBlackout: Bool = false
@@ -67,4 +72,13 @@ struct Constants {
     
     //Определенный цвет, в который перекрашивается основная кнопка при долгом нажатии
     static let tappedButtonChangedColor: UIColor? = nil
+    
+    //Значения основных параметров кнопки определены
+    static let isDrawn = false
+    
+    //Способность кнопки скрываться
+    static let canBeHidden = false
+    
+    //Длительность исчезновения кнопки
+    static let hiddenAnimationDuration: Double = 1
 }

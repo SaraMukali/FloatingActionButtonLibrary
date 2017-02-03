@@ -1,24 +1,25 @@
 //
-//  ViewController.swift
+//  TableViewController.swift
 //  FloatingActionButton
 //
-//  Created by Sara Mukali on 10.01.17.
+//  Created by Sara on 1/31/17.
 //  Copyright © 2017 Sara. All rights reserved.
 //
 
 import UIKit
 
-class ViewController: UIViewController {
+class TableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
+    var fab = FloatingActionButton()
+    
+    @IBOutlet weak var tableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        let fab = FloatingActionButton()
         fab.add(on: self.view)
-        fab.color = UIColor.yellow
-        fab.tappedButtonChangedColor = UIColor.purple
+        fab.color = UIColor.green
+        fab.tappedButtonChangedColor = UIColor.darkGray
         fab.radius = 40
         fab.hasBlackout = true
-        fab.blackoutColor = UIColor.blue
         fab.blackoutOpacity = 0.5
         fab.hasShadow = true
         
@@ -47,6 +48,25 @@ class ViewController: UIViewController {
         fab.addItem("With icon", icon: UIImage(named: "icMap"))
         fab.paddingY = 50
         fab.paddingX = 35
+
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 50
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell")
+        cell?.textLabel?.text = String(indexPath.row)
+        
+        if indexPath.row == 29 {
+            fab.setHidden(withType: .move, withAnimationDuration: 1)
+        }
+        
+        return cell!
     }
 }
-

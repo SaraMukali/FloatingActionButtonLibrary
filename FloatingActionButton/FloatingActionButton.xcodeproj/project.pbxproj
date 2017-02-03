@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5649D8DD1E3A19BC007844FD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5649D8DC1E3A19BC007844FD /* ViewController.swift */; };
+		56DD68C11E42EB9000CC2891 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DD68C01E42EB9000CC2891 /* TableViewController.swift */; };
 		D2204D6A1E249C8F006A273D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2204D691E249C8F006A273D /* AppDelegate.swift */; };
-		D2204D6C1E249C8F006A273D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2204D6B1E249C8F006A273D /* ViewController.swift */; };
 		D2204D6F1E249C8F006A273D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2204D6D1E249C8F006A273D /* Main.storyboard */; };
 		D2204D711E249C8F006A273D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D2204D701E249C8F006A273D /* Assets.xcassets */; };
 		D2204D741E249C8F006A273D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2204D721E249C8F006A273D /* LaunchScreen.storyboard */; };
@@ -29,9 +30,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5649D8DC1E3A19BC007844FD /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewController.swift; path = Sample/ViewController.swift; sourceTree = "<group>"; };
+		56DD68C01E42EB9000CC2891 /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TableViewController.swift; path = Sample/TableViewController.swift; sourceTree = "<group>"; };
 		D2204D661E249C8F006A273D /* FloatingActionButton.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FloatingActionButton.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2204D691E249C8F006A273D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		D2204D6B1E249C8F006A273D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		D2204D6E1E249C8F006A273D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D2204D701E249C8F006A273D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D2204D731E249C8F006A273D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -61,6 +63,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5649D8D71E3A1989007844FD /* Sample */ = {
+			isa = PBXGroup;
+			children = (
+				56DD68C01E42EB9000CC2891 /* TableViewController.swift */,
+				5649D8DC1E3A19BC007844FD /* ViewController.swift */,
+			);
+			name = Sample;
+			sourceTree = "<group>";
+		};
 		D2204D5D1E249C8F006A273D = {
 			isa = PBXGroup;
 			children = (
@@ -81,9 +92,9 @@
 		D2204D681E249C8F006A273D /* FloatingActionButton */ = {
 			isa = PBXGroup;
 			children = (
-				D2AEE2511E249D740049725D /* Support */,
 				D2AEE24E1E249D5E0049725D /* Source */,
-				D2204D6B1E249C8F006A273D /* ViewController.swift */,
+				D2AEE2511E249D740049725D /* Support */,
+				5649D8D71E3A1989007844FD /* Sample */,
 				D2204D6D1E249C8F006A273D /* Main.storyboard */,
 			);
 			path = FloatingActionButton;
@@ -215,7 +226,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D2204D6C1E249C8F006A273D /* ViewController.swift in Sources */,
+				5649D8DD1E3A19BC007844FD /* ViewController.swift in Sources */,
+				56DD68C11E42EB9000CC2891 /* TableViewController.swift in Sources */,
 				D2AEE2501E249D6F0049725D /* FloatingActionButton.swift in Sources */,
 				D24C51291E277F9D00CB36DD /* FloatingActionButtonItem.swift in Sources */,
 				D2204D6A1E249C8F006A273D /* AppDelegate.swift in Sources */,
