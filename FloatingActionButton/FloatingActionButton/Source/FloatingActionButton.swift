@@ -570,42 +570,38 @@ open class FloatingActionButton: UIView {
     open func setHidden(withType type: HiddenType, withAnimationDuration duration: Double) {
         canBeHidden = true
         hiddenType = type
+        isHiddenSet = true
         hiddenAnimationDuration = duration
         if isDrawn {
             switch hiddenType {
             case .alpha:
-                if !isHiddenSet {
-                    changeAlpha()
-                }
+                changeAlpha()
             case .move:
                 moveFromView()
             case .none:
                 break
             }
         }
-        isHiddenSet = true
     }
     
     //Вернуть кнопку
     open func removeHidden() {
+        isHiddenSet = false
         switch hiddenType {
         case .alpha:
-            if isHiddenSet {
-                changeAlpha()
-            }
+            changeAlpha()
         case .move:
             moveToView()
         case .none:
             alpha = 1
         }
-        isHiddenSet = false
     }
     
     
     //Кнопка исчезает или появляется, меняя прозрачность
     fileprivate func changeAlpha() {
         UIView.animate(withDuration: hiddenAnimationDuration, animations: {
-            self.alpha = abs(self.alpha - 1)
+            self.alpha = self.isHiddenSet ? 0 : 1
         })
     }
     
