@@ -567,7 +567,7 @@ open class FloatingActionButton: UIView {
     }
 
     //Спрятать кнопку анимированно
-    open func setHidden(withType type: HiddenType, withAnimationDuration duration: Double)  {
+    open func setHidden(withType type: HiddenType, withAnimationDuration duration: Double) {
         canBeHidden = true
         hiddenType = type
         hiddenAnimationDuration = duration
@@ -596,7 +596,7 @@ open class FloatingActionButton: UIView {
         case .move:
             moveToView()
         case .none:
-            self.alpha = 1
+            alpha = 1
         }
         isHiddenSet = false
     }
