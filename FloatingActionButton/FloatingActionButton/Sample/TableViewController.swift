@@ -22,6 +22,7 @@ class TableViewController: UIViewController, UITableViewDataSource, UITableViewD
         fab.hasBlackout = true
         fab.blackoutOpacity = 0.5
         fab.hasShadow = true
+        fab.hiddenType = .move
         
         fab.addAction { (item: FloatingActionButton) in
             let alert = UIAlertController(title: "Hello!", message: "Do you want to continue?", preferredStyle: .alert)
@@ -64,11 +65,11 @@ class TableViewController: UIViewController, UITableViewDataSource, UITableViewD
         cell?.textLabel?.text = String(indexPath.row)
         
         if indexPath.row == 20 {
-            fab.setHidden(withType: .move, withAnimationDuration: 1)
+            fab.isHidden = true
         }
         
         if indexPath.row == 70 {
-            fab.removeHidden()
+            fab.isHidden = false
         }
         
         return cell!

@@ -92,8 +92,25 @@ open class FloatingActionButton: UIView {
     //Активность кнопки
     open var isActive: Bool = Constants.isActive
     
+    //Переопределение свойства isHidden
+    open override var isHidden: Bool {
+        get {
+            return super.isHidden
+        }
+        set(bool) {
+            if (bool) {
+                setAnimatedHidden()
+            } else {
+                removeAnimatedHidden()
+            }
+        }
+    }
+    
     //Вид скрытия кнопки
-    open var hiddenType: HiddenType = .alpha
+    open var hiddenType: HiddenType = .none
+    
+    //Длительность исчезновения кнопки
+    open var hiddenAnimationDuration: Double = Constants.hiddenAnimationDuration
     
     //Массив из вторичных кнопок
     open var items: [FloatingActionButtonItem] = []
@@ -143,9 +160,6 @@ open class FloatingActionButton: UIView {
     //Способность кнопки скрываться
     fileprivate var canBeHidden = Constants.canBeHidden
     
-    //Длительность исчезновения кнопки
-    fileprivate var hiddenAnimationDuration: Double = Constants.hiddenAnimationDuration
-    
     //Пустой инициализатор
     public init() {
         super.init(frame: CGRect(x: 0, y: 0, width: (radius * 2), height: (radius * 2)))
@@ -194,7 +208,7 @@ open class FloatingActionButton: UIView {
         setAdditionalProperties()
         
         if canBeHidden {
-            setHidden(withType: hiddenType, withAnimationDuration: hiddenAnimationDuration)
+            setAnimatedHidden()
         }
     }
 
@@ -557,17 +571,10 @@ open class FloatingActionButton: UIView {
             superviewSize = superview.bounds.size
         }
     }
-    
-    //Спрятать кнопку
-    open func setHidden() {
-        alpha = 0
-    }
 
     //Спрятать кнопку анимированно
-    open func setHidden(withType type: HiddenType, withAnimationDuration duration: Double) {
+    fileprivate func setAnimatedHidden() {
         canBeHidden = true
-        hiddenType = type
-        hiddenAnimationDuration = duration
         if isDrawn {
             switch hiddenType {
             case .alpha:
@@ -575,20 +582,20 @@ open class FloatingActionButton: UIView {
             case .move:
                 moveFromView()
             case .none:
-                break
+                super.isHidden = true
             }
         }
     }
     
     //Вернуть кнопку
-    open func removeHidden() {
+    fileprivate func removeAnimatedHidden() {
         switch hiddenType {
         case .alpha:
             makeVisible()
         case .move:
             moveToView()
         case .none:
-            alpha = 1
+            super.isHidden = false
         }
     }
     
@@ -597,7 +604,7 @@ open class FloatingActionButton: UIView {
         UIView.animate(withDuration: hiddenAnimationDuration, animations: {
             self.alpha = 0
         }) { (Bool) in
-            self.isHidden = true
+            super.isHidden = true
         }
     }
     
@@ -605,7 +612,7 @@ open class FloatingActionButton: UIView {
     fileprivate func makeVisible() {
         UIView.animate(withDuration: hiddenAnimationDuration, animations: {
             self.alpha = 1
-            self.isHidden = false
+            super.isHidden = false
         })
     }
     
@@ -616,7 +623,7 @@ open class FloatingActionButton: UIView {
                 self.frame.origin.y = size.height + Constants.shadowRadius
             }
         }) { (Bool) in
-             self.isHidden = true
+             super.isHidden = true
         }
     }
     
@@ -626,7 +633,7 @@ open class FloatingActionButton: UIView {
             if let size = self.superviewSize {
                 self.frame.origin.y = size.height - self.radius * 2  - Constants.shadowRadius - self.paddingY
             }
-            self.isHidden = false
+            super.isHidden = false
         })
     }
 }

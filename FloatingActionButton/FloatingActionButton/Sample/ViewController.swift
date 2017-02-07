@@ -20,6 +20,7 @@ class ViewController: UIViewController {
         fab.blackoutColor = UIColor.blue
         fab.blackoutOpacity = 0.5
         fab.hasShadow = true
+        fab.hiddenType = .alpha
         
         fab.addAction { (item: FloatingActionButton) in
             let alert = UIAlertController(title: "Hello!", message: "Do you want to continue?", preferredStyle: .alert)
@@ -49,11 +50,11 @@ class ViewController: UIViewController {
     }
 
     @IBAction func moveFAB(_ sender: UIButton) {
-        fab.setHidden(withType: .alpha, withAnimationDuration: 1)
+        fab.isHidden = true
     }
     
     @IBAction func returnFAB(_ sender: UIButton) {
-        fab.removeHidden()
+        fab.isHidden = false
     }
 }
 
