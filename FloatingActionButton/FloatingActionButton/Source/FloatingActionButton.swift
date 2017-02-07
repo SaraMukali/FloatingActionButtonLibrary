@@ -592,6 +592,7 @@ open class FloatingActionButton: UIView {
         }
     }
     
+    //Кнопка становится прозрачной анимированно
     fileprivate func makeInvisible() {
         UIView.animate(withDuration: hiddenAnimationDuration, animations: {
             self.alpha = 0
@@ -600,6 +601,7 @@ open class FloatingActionButton: UIView {
         }
     }
     
+    //Кнопка становится непрозрачной анимированно
     fileprivate func makeVisible() {
         UIView.animate(withDuration: hiddenAnimationDuration, animations: {
             self.alpha = 1
