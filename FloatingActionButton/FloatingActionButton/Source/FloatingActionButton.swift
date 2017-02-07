@@ -95,9 +95,6 @@ open class FloatingActionButton: UIView {
     //Вид скрытия кнопки
     open var hiddenType: HiddenType = .alpha
     
-    //Кнопка спрятана
-    open var isHiddenSet: Bool = Constants.isHiddenSet
-    
     //Массив из вторичных кнопок
     open var items: [FloatingActionButtonItem] = []
     
@@ -570,12 +567,11 @@ open class FloatingActionButton: UIView {
     open func setHidden(withType type: HiddenType, withAnimationDuration duration: Double) {
         canBeHidden = true
         hiddenType = type
-        isHiddenSet = true
         hiddenAnimationDuration = duration
         if isDrawn {
             switch hiddenType {
             case .alpha:
-                changeAlpha()
+                makeInvisible()
             case .move:
                 moveFromView()
             case .none:
@@ -586,10 +582,9 @@ open class FloatingActionButton: UIView {
     
     //Вернуть кнопку
     open func removeHidden() {
-        isHiddenSet = false
         switch hiddenType {
         case .alpha:
-            changeAlpha()
+            makeVisible()
         case .move:
             moveToView()
         case .none:
@@ -597,11 +592,18 @@ open class FloatingActionButton: UIView {
         }
     }
     
-    
-    //Кнопка исчезает или появляется, меняя прозрачность
-    fileprivate func changeAlpha() {
+    fileprivate func makeInvisible() {
         UIView.animate(withDuration: hiddenAnimationDuration, animations: {
-            self.alpha = self.isHiddenSet ? 0 : 1
+            self.alpha = 0
+        }) { (Bool) in
+            self.isHidden = true
+        }
+    }
+    
+    fileprivate func makeVisible() {
+        UIView.animate(withDuration: hiddenAnimationDuration, animations: {
+            self.alpha = 1
+            self.isHidden = false
         })
     }
     
@@ -611,7 +613,9 @@ open class FloatingActionButton: UIView {
             if let size = self.superviewSize {
                 self.frame.origin.y = size.height + Constants.shadowRadius
             }
-        })
+        }) { (Bool) in
+             self.isHidden = true
+        }
     }
     
     //Кнопка появляется, двигаясь снизу
@@ -620,6 +624,7 @@ open class FloatingActionButton: UIView {
             if let size = self.superviewSize {
                 self.frame.origin.y = size.height - self.radius * 2  - Constants.shadowRadius - self.paddingY
             }
+            self.isHidden = false
         })
     }
 }
