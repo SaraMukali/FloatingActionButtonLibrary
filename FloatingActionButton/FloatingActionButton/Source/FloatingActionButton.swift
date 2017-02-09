@@ -98,11 +98,13 @@ open class FloatingActionButton: UIView {
             return super.isHidden
         }
         set(bool) {
-            if (bool) {
-                setAnimatedHidden()
-            } else {
-                removeAnimatedHidden()
+            canBeHidden = bool
+            if !bool {
+                super.isHidden = bool
             }
+            changeHidden(isHidden: bool, completion: { (Bool) in
+                super.isHidden = bool
+            })
         }
     }
     
@@ -208,7 +210,10 @@ open class FloatingActionButton: UIView {
         setAdditionalProperties()
         
         if canBeHidden {
-            setAnimatedHidden()
+            changeHidden(isHidden: true, completion: { (Bool) in
+                super.isHidden = true
+            })
+            canBeHidden = false
         }
     }
 
@@ -571,70 +576,43 @@ open class FloatingActionButton: UIView {
             superviewSize = superview.bounds.size
         }
     }
-
-    //Спрятать кнопку анимированно
-    fileprivate func setAnimatedHidden() {
-        canBeHidden = true
+    
+    //Функция выбирает метод скрытия и возвращения кнопки
+    fileprivate func changeHidden(isHidden: Bool, completion: ((Bool) -> Swift.Void)? = nil ) {
         if isDrawn {
             switch hiddenType {
             case .alpha:
-                makeInvisible()
+                changeVisibility(isVisible: !isHidden, completion: completion)
             case .move:
-                moveFromView()
+                changePosition(isMoved: isHidden, completion: completion)
             case .none:
-                super.isHidden = true
+                super.isHidden = isHidden
             }
         }
     }
     
-    //Вернуть кнопку
-    fileprivate func removeAnimatedHidden() {
-        switch hiddenType {
-        case .alpha:
-            makeVisible()
-        case .move:
-            moveToView()
-        case .none:
-            super.isHidden = false
-        }
-    }
-    
-    //Кнопка становится прозрачной анимированно
-    fileprivate func makeInvisible() {
+    //Функция анимированно меняет прозрачность кнопки
+    fileprivate func changeVisibility(isVisible: Bool, completion: ((Bool) -> Swift.Void)? = nil) {
         UIView.animate(withDuration: hiddenAnimationDuration, animations: {
-            self.alpha = 0
+            self.alpha = isVisible ? 1 : 0
         }) { (Bool) in
-            super.isHidden = true
+            if let completion = completion {
+                completion(Bool)
+            }
         }
     }
     
-    //Кнопка становится непрозрачной анимированно
-    fileprivate func makeVisible() {
-        UIView.animate(withDuration: hiddenAnimationDuration, animations: {
-            self.alpha = 1
-            super.isHidden = false
-        })
-    }
-    
-    //Кнопка движется вниз из основного вью и исчезает
-    fileprivate func moveFromView() {
+    //Функция двигает кнопку из основного вью вниз или обратно вверх
+    fileprivate func changePosition(isMoved: Bool, completion: ((Bool) -> Swift.Void)? = nil){
         UIView.animate(withDuration: hiddenAnimationDuration, animations: {
             if let size = self.superviewSize {
-                self.frame.origin.y = size.height + Constants.shadowRadius
+                self.frame.origin.y = isMoved ? (size.height + Constants.shadowRadius) : (size.height - self.radius * 2  - Constants.shadowRadius - self.paddingY)
             }
         }) { (Bool) in
-             super.isHidden = true
-        }
-    }
-    
-    //Кнопка появляется, двигаясь снизу
-    fileprivate func moveToView() {
-        UIView.animate(withDuration: hiddenAnimationDuration, animations: {
-            if let size = self.superviewSize {
-                self.frame.origin.y = size.height - self.radius * 2  - Constants.shadowRadius - self.paddingY
+            if let completion = completion {
+                completion(Bool)
             }
-            super.isHidden = false
-        })
+        }
     }
 }
 
