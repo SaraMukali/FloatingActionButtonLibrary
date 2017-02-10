@@ -102,7 +102,7 @@ open class FloatingActionButton: UIView {
             if !bool {
                 super.isHidden = bool
             }
-            changeHidden(isHidden: bool, completion: { (Bool) in
+            makeHiddenOrVisible(isHidden: bool, completion: { (Bool) in
                 super.isHidden = bool
             })
         }
@@ -210,7 +210,7 @@ open class FloatingActionButton: UIView {
         setAdditionalProperties()
         
         if canBeHidden {
-            changeHidden(isHidden: true, completion: { (Bool) in
+            makeHiddenOrVisible(isHidden: true, completion: { (Bool) in
                 super.isHidden = true
             })
             canBeHidden = false
@@ -578,7 +578,7 @@ open class FloatingActionButton: UIView {
     }
     
     //Функция выбирает метод скрытия и возвращения кнопки
-    fileprivate func changeHidden(isHidden: Bool, completion: ((Bool) -> Swift.Void)? = nil ) {
+    fileprivate func makeHiddenOrVisible(isHidden: Bool, completion: ((Bool) -> Swift.Void)? = nil ) {
         if isDrawn {
             switch hiddenType {
             case .alpha:
@@ -586,7 +586,9 @@ open class FloatingActionButton: UIView {
             case .move:
                 changePosition(isMoved: isHidden, completion: completion)
             case .none:
-                super.isHidden = isHidden
+                if let completion = completion {
+                    completion(isHidden)
+                }
             }
         }
     }
