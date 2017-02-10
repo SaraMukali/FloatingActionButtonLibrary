@@ -20,6 +20,7 @@ public enum HorizontalPosition {
 public enum HiddenType {
     case alpha
     case move
+    case none
 }
 
 open class FloatingActionButton: UIView {
@@ -91,8 +92,27 @@ open class FloatingActionButton: UIView {
     //Активность кнопки
     open var isActive: Bool = Constants.isActive
     
+    //Переопределение свойства isHidden
+    open override var isHidden: Bool {
+        get {
+            return super.isHidden
+        }
+        set(bool) {
+            canBeHidden = bool
+            if !bool {
+                super.isHidden = bool
+            }
+            makeHiddenOrVisible(isHidden: bool, completion: { (Bool) in
+                super.isHidden = bool
+            })
+        }
+    }
+    
     //Вид скрытия кнопки
-    open var hiddenType: HiddenType = .alpha
+    open var hiddenType: HiddenType = .none
+    
+    //Длительность исчезновения кнопки
+    open var hiddenAnimationDuration: Double = Constants.hiddenAnimationDuration
     
     //Массив из вторичных кнопок
     open var items: [FloatingActionButtonItem] = []
@@ -142,9 +162,6 @@ open class FloatingActionButton: UIView {
     //Способность кнопки скрываться
     fileprivate var canBeHidden = Constants.canBeHidden
     
-    //Длительность исчезновения кнопки
-    fileprivate var hiddenAnimationDuration: Double = Constants.hiddenAnimationDuration
-    
     //Пустой инициализатор
     public init() {
         super.init(frame: CGRect(x: 0, y: 0, width: (radius * 2), height: (radius * 2)))
@@ -193,7 +210,10 @@ open class FloatingActionButton: UIView {
         setAdditionalProperties()
         
         if canBeHidden {
-            setHidden(withType: hiddenType, withAnimationDuration: hiddenAnimationDuration)
+            makeHiddenOrVisible(isHidden: true, completion: { (Bool) in
+                super.isHidden = true
+            })
+            canBeHidden = false
         }
     }
 
@@ -557,46 +577,44 @@ open class FloatingActionButton: UIView {
         }
     }
     
-    //Спрятать кнопку
-    open func setHidden() {
-        alpha = 0
-    }
-    
-    //Спрятать кнопку анимированно
-    open func setHidden(withType type: HiddenType, withAnimationDuration duration: Double) {
-        canBeHidden = true
-        hiddenType = type
-        hiddenAnimationDuration = duration
+    //Функция выбирает метод скрытия и возвращения кнопки
+    fileprivate func makeHiddenOrVisible(isHidden: Bool, completion: ((Bool) -> Swift.Void)? = nil ) {
         if isDrawn {
             switch hiddenType {
             case .alpha:
-                changeAlpha()
+                changeVisibility(isVisible: !isHidden, completion: completion)
             case .move:
-                moveFromView()
+                changePosition(isMoved: isHidden, completion: completion)
+            case .none:
+                if let completion = completion {
+                    completion(isHidden)
+                }
             }
-            canBeHidden = false
         }
     }
     
-    open func sjgtHiddenAnimationDuration(_ duration: Double) {
-        hiddenAnimationDuration = duration
-        setNeedsDisplay()
-    }
-    
-    //Кнопка меняет прозрачность и исчезает
-    fileprivate func changeAlpha() {
+    //Функция анимированно меняет прозрачность кнопки
+    fileprivate func changeVisibility(isVisible: Bool, completion: ((Bool) -> Swift.Void)? = nil) {
         UIView.animate(withDuration: hiddenAnimationDuration, animations: {
-            self.alpha = 0
-        })
+            self.alpha = isVisible ? 1 : 0
+        }) { (Bool) in
+            if let completion = completion {
+                completion(Bool)
+            }
+        }
     }
     
-    //Кнопка движется со основного вью и исчезает
-    fileprivate func moveFromView() {
+    //Функция двигает кнопку из основного вью вниз или обратно вверх
+    fileprivate func changePosition(isMoved: Bool, completion: ((Bool) -> Swift.Void)? = nil){
         UIView.animate(withDuration: hiddenAnimationDuration, animations: {
             if let size = self.superviewSize {
-                self.frame.origin.y = size.height + Constants.shadowRadius
+                self.frame.origin.y = isMoved ? (size.height + Constants.shadowRadius) : (size.height - self.radius * 2  - Constants.shadowRadius - self.paddingY)
             }
-        })
+        }) { (Bool) in
+            if let completion = completion {
+                completion(Bool)
+            }
+        }
     }
 }
 
