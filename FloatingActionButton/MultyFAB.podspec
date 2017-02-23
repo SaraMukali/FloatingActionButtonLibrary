@@ -21,7 +21,7 @@ Pod::Spec.new do |s|
 
   s.source       = { :git => "https://stash.kolesa-team.org/projects/IAG/repos/multyfab-ios.git", :tag => "1.0.0" }
 
-  s.source_files = 'Source/*.swift'
+  s.source_files = 'FloatingActionButton/Source/*.swift'
   s.requires_arc = true
 
 end
