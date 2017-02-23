@@ -14,11 +14,12 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         fab.add(on: self.view)
-        fab.color = UIColor.yellow
-        fab.radius = 40
+        fab.color = UIColor.blue
+        fab.radius = 30
         fab.hasBlackout = true
-        fab.blackoutColor = UIColor.blue
+        fab.blackoutColor = UIColor.gray
         fab.blackoutOpacity = 0.5
+        fab.blackoutAnimationDuration = 0.2
         fab.hasShadow = true
         fab.hiddenType = .alpha
         
@@ -28,13 +29,13 @@ class ViewController: UIViewController {
             self.present(alert, animated: true, completion: nil)
         }
         
-        fab.itemSpace = 20
-        fab.horizontalPosition = .left
+        fab.itemSpace = 15
+//        fab.horizontalPosition = .right
         let item = FloatingActionButtonItem()
         item.color = UIColor.blue
         item.title = "Custom"
         fab.addItem(item: item)
-        fab.itemRadius = 30
+        fab.itemRadius = 20
         fab.addItem(title: "With title")
         
         item.titleColor = UIColor.green
@@ -45,8 +46,8 @@ class ViewController: UIViewController {
             self.present(alert, animated: true, completion: nil)
         }
         fab.addItem("With icon", icon: UIImage(named: "icMap"))
-        fab.paddingY = 50
-        fab.paddingX = 35
+        fab.paddingY = 20
+        fab.paddingX = 20
     }
 
     @IBAction func moveFAB(_ sender: UIButton) {

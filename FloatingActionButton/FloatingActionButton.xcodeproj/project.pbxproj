@@ -172,6 +172,7 @@
 				TargetAttributes = {
 					D2204D651E249C8F006A273D = {
 						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = DL4A7FUZ6U;
 						ProvisioningStyle = Automatic;
 					};
 					D2204D791E249C8F006A273D = {
@@ -369,6 +370,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = DL4A7FUZ6U;
 				INFOPLIST_FILE = FloatingActionButton/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = KBTU.FloatingActionButton;
@@ -381,6 +383,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = DL4A7FUZ6U;
 				INFOPLIST_FILE = FloatingActionButton/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = KBTU.FloatingActionButton;
