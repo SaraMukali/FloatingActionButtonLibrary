@@ -17,6 +17,7 @@
 		D24C512B1E2786E700CB36DD /* Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D24C512A1E2786E700CB36DD /* Icons.xcassets */; };
 		D2AEE2501E249D6F0049725D /* FloatingActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2AEE24F1E249D6F0049725D /* FloatingActionButton.swift */; };
 		D2AEE2531E249E710049725D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2AEE2521E249E710049725D /* Constants.swift */; };
+		F93A2AA61E5F23BF000F70BA /* MultyFAB.podspec in Resources */ = {isa = PBXBuildFile; fileRef = F93A2AA51E5F23BF000F70BA /* MultyFAB.podspec */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +44,7 @@
 		D24C512A1E2786E700CB36DD /* Icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Icons.xcassets; sourceTree = "<group>"; };
 		D2AEE24F1E249D6F0049725D /* FloatingActionButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FloatingActionButton.swift; path = Source/FloatingActionButton.swift; sourceTree = "<group>"; };
 		D2AEE2521E249E710049725D /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = Source/Constants.swift; sourceTree = "<group>"; };
+		F93A2AA51E5F23BF000F70BA /* MultyFAB.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MultyFAB.podspec; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +77,7 @@
 		D2204D5D1E249C8F006A273D = {
 			isa = PBXGroup;
 			children = (
+				F93A2AA51E5F23BF000F70BA /* MultyFAB.podspec */,
 				D2204D681E249C8F006A273D /* FloatingActionButton */,
 				D2204D671E249C8F006A273D /* Products */,
 			);
@@ -207,6 +210,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D2204D741E249C8F006A273D /* LaunchScreen.storyboard in Resources */,
+				F93A2AA61E5F23BF000F70BA /* MultyFAB.podspec in Resources */,
 				D2204D711E249C8F006A273D /* Assets.xcassets in Resources */,
 				D24C512B1E2786E700CB36DD /* Icons.xcassets in Resources */,
 				D2204D6F1E249C8F006A273D /* Main.storyboard in Resources */,
