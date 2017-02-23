@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.social_media_url = 'http://kolesa.kz'
   s.license      = 'MIT'
   s.author             = { 'Iliya Osipov' => 'osipov@kolesa.kz' }
-  s.ios.deployment_target = '8.1'
+  s.ios.deployment_target = '8.0'
   s.source       = { :git => 'ssh://git@stash.kolesa-team.org:7999/iag/multyfab-ios.git', :tag => '1.0.1' }
   s.source_files  = 'FloatingActionButton/FloatingActionButton/Source/*.swift'
   s.requires_arc = true
