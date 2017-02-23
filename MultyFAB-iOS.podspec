@@ -7,9 +7,9 @@
 #
 
 Pod::Spec.new do |s|
-  s.name         = 'MultyFAB'
+  s.name         = 'MultyFAB-iOS'
   s.version      = '1.0.1'
-  s.summary      = 'This is MultyFAB like Android-fab, created by Sara.'
+  s.summary      = 'This is MultyFAB-iOS like Android-fab, created by Sara.'
   s.homepage     = 'http://kolesa.kz'
   s.social_media_url = 'http://kolesa.kz'
   s.license      = 'MIT'
