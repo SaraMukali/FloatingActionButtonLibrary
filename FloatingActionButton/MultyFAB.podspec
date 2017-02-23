@@ -7,21 +7,15 @@
 #
 
 Pod::Spec.new do |s|
-  s.name         = "MultyFAB"
-  s.version      = "1.0.0"
-  s.summary      = "iOS multyFAb like android"
-
-  s.homepage      = "http://kolesa.kz"
-
-  s.license      = "MIT"
-  # s.license     = { :type => "MIT", :file => "FILE_LICENSE" }
-
-  s.author       = { "Iliya Osipov" => "osipov@kolesa.kz" }
-  s.platform     = :ios, "8.0"
-
-  s.source       = { :git => "https://stash.kolesa-team.org/projects/IAG/repos/multyfab-ios.git", :tag => "1.0.0" }
-
-  s.source_files = 'FloatingActionButton/Source/*.swift'
+  s.name         = 'MultyFAB'
+  s.version      = '1.0.0'
+  s.summary      = 'This is MultyFAB like Android-fab, created by Sara.'
+  s.homepage     = 'http://kolesa.kz'
+  s.social_media_url = 'http://kolesa.kz'
+  s.license      = 'MIT'
+  s.author             = { 'Iliya Osipov' => 'osipov@kolesa.kz' }
+  s.ios.deployment_target = '8.0'
+  s.source       = { :git => 'ssh://git@stash.kolesa-team.org:7999/iag/multyfab-ios.git', :tag => s.version }
+  s.source_files  = 'FloatingActionButton/Source/*.swift'
   s.requires_arc = true
-
 end
